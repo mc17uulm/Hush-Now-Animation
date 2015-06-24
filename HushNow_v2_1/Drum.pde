@@ -1,6 +1,3 @@
-//////////////////////////////////////
-// macht momentan nur _einen_ beat :( //
-//////////////////////////////////////
 class Drum {
   
   int intensity = 10;
@@ -25,6 +22,7 @@ class Drum {
     rect(pos.x, pos.y, sizeX, sizeY);
   }
   
+  // beat funktion noch fehlerhaft
   void beat () {
     if (growing) {
       sizeX += 8;
