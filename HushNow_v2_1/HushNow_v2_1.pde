@@ -19,10 +19,14 @@ void setup() {
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
   
   ////// DRUM PADS ///////
-  color red = color(255,50,50);
-  color green = color(0,204,0);
-  color blue = color(0,204,255);
-  color yellow = color(255,230,0);
+  //color red = color(255,50,50);
+  color red = color(196, 3, 10);
+  //color green = color(0,204,0);
+  color green = color(0, 198, 19);
+  //color blue = color(0,204,255);
+  color blue = color(0, 122, 221);
+  //color yellow = color(255,230,0);
+  color yellow = color(226, 210, 0);
   
   pvUL = new PVector(width/4,height/4);
   pvUR = new PVector(3*width/4,height/4);
