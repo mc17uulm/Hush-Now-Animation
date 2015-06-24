@@ -16,7 +16,8 @@ class Drum {
   }
   
   void display () {
-    stroke(col,70);
+    //stroke(col,200);
+    noStroke();
     fill(col,150);
     rectMode(CENTER);
     rect(pos.x, pos.y, sizeX, sizeY);
