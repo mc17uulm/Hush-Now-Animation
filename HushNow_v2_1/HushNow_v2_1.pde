@@ -19,10 +19,14 @@ void setup() {
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
   
   ////// DRUM PADS ///////
-  color red = color(255,50,50);
-  color green = color(0,204,0);
-  color blue = color(0,204,255);
-  color yellow = color(255,230,0);
+  //color red = color(255,50,50);
+  color red = color(196, 3, 10);
+  //color green = color(0,204,0);
+  color green = color(0, 198, 19);
+  //color blue = color(0,204,255);
+  color blue = color(0, 122, 221);
+  //color yellow = color(255,230,0);
+  color yellow = color(226, 210, 0);
   
   pvUL = new PVector(width/4,height/4);
   pvUR = new PVector(3*width/4,height/4);
@@ -53,12 +57,12 @@ void draw () {
   beat(11040, drumLR);
   beat(11217, drumLL);
   
-  
-  //beat(20050, drumUL);
-  //beat(20460, drumUR);
-  //beat(21040, drumLR);
-  //beat(21217, drumLL);
-  
+  /*
+  beat(20050, drumUL);
+  beat(20460, drumUR);
+  beat(21040, drumLR);
+  beat(21217, drumLL);
+  */
   
   //the line that displays the position in the track
   stroke(230);
@@ -72,6 +76,7 @@ void draw () {
   stroke(250,50,50,200);
   fill(250,50,50,150);
   ellipse(width/2, height/2, 50 * (2 + song.mix.get(500)), 50 * (2 + song.mix.level()));
+  
 }
 
 
@@ -119,31 +124,4 @@ void keyPressed() {
     }
   }
 }
-
-
-/*
-* klappt noch nicht,
-* es darf nicht nach jedem durchlauf
-* eine verschiedene drum angesprochen werden
-*
-/*
-Drum randomDrum () {
-  Drum returnDrum = null;
-  int x = (int)random(0,3.9);
-  switch (x) {
-    case 0: returnDrum = drumUL;
-    System.out.println(x);
-    break;
-    case 1: returnDrum = drumUR;
-    System.out.println(x);
-    break;
-    case 2: returnDrum = drumLL;
-    System.out.println(x);
-    break;
-    case 3: returnDrum = drumLR;
-    System.out.println(x);
-  }
-  return returnDrum;
-}
-*/
 
