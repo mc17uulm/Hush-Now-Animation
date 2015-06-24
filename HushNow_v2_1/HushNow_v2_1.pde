@@ -88,6 +88,34 @@ void beat (int songPos, Drum dr) {
   }
 }
 
+/*
+* klappt noch nicht,
+* es darf nicht nach jedem durchlauf
+* eine verschiedene drum angesprochen werden
+*
+/*
+Drum randomDrum () {
+  Drum returnDrum = null;
+  int x = (int)random(0,3.9);
+  switch (x) {
+    case 0: returnDrum = drumUL;
+    System.out.println(x);
+    break;
+    case 1: returnDrum = drumUR;
+    System.out.println(x);
+    break;
+    case 2: returnDrum = drumLL;
+    System.out.println(x);
+    break;
+    case 3: returnDrum = drumLR;
+    System.out.println(x);
+  }
+  return returnDrum;
+}
+*/
+
+
+
 
 void keyPressed() {
   
