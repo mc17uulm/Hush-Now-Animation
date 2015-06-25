@@ -26,7 +26,7 @@ void setup() {
 
   ////// DRUM PADS ///////
   //color red = color(255,50,50);
-  color red = color(196, 3, 10);
+  color red = color(230, 3, 10);
   //color green = color(0,204,0);
   color green = color(0, 198, 19);
   //color blue = color(0,204,255);
@@ -39,16 +39,16 @@ void setup() {
   pvLL = new PVector(width/4, 3*height/4);
   pvLR = new PVector(3*width/4, 3*height/4);
 
-  drumUL = new Drum(pvUL, width/2, height/2, red);
-  drumUR = new Drum(pvUR, width/2, height/2, green);
-  drumLL = new Drum(pvLL, width/2, height/2, blue);
-  drumLR = new Drum(pvLR, width/2, height/2, yellow);
+  drumUL = new Drum(pvUL, width/2, height/2, green);
+  drumUR = new Drum(pvUR, width/2, height/2, red);
+  drumLL = new Drum(pvLL, width/2, height/2, yellow);
+  drumLR = new Drum(pvLR, width/2, height/2, blue);
 
-  // sehr seltsam, bei mir (luis) hängt es am anfang seit heute extrem,
-  // und nach 1-2 sek ist es normal. das hier mit dem skip behebt es fuer mich 
-  song.skip(5000);
-  song.skip(-5000);
-  
+  //  manchmal hängt es bei mir (luis) am anfang extrem,
+  //  und nach 1-2 sek ist es normal. das hier mit dem skip behebt es fuer mich 
+  //  song.skip(5000);
+  //  song.skip(-5000);
+
   song.play();
   songPlaying = true;
 }
@@ -58,9 +58,11 @@ void draw () {
   beat.detect(song.mix);
   background(0);
 
+  //show peace sign at the end
   if (song.position() > 65000) {
     showPeace();
   } else {
+    //for stability
     peaceAlpha = 0;
   }
 
@@ -69,31 +71,33 @@ void draw () {
   drumLL.display();
   drumLR.display();
 
-  beat(10050, drumUL);
-  beat(10460, drumUR);
-  beat(11040, drumLR);
-  beat(11217, drumLL);
+  beat(10050, drumUL, 12);
+  beat(10460, drumUR, 12);
+  beat(11040, drumLR, 12);
+  beat(11217, drumLL, 12);
+  
+  beat(11539, drumUL, 12);
+  beat(11770, drumUR, 12);
+  beat(12116, drumLR, 12);
+  beat(12466, drumLL, 24);
+  beat(12466, drumUR, 24);
+  beat(12638, drumUL, 24);
+  beat(12638, drumLR, 24);
 
-
-  /*
-  beat(20050, drumUL);
-   beat(20460, drumUR);
-   beat(21040, drumLR);
-   beat(21217, drumLL);
-   */
-
-  //the line that displays the position in the track
-  stroke(230);
-  strokeWeight(2);
-  fill(230);
-  float lineX = map(song.position(), 0, song.length(), 0, width);   
-  line(lineX, height, lineX, height-15);
 
 
   // test guitar
   stroke(250, 50, 50, 200);
   fill(250, 50, 50, 150);
   ellipse(width/2, height/2, 50 * (2 + song.mix.get(500)), 50 * (2 + song.mix.level()));
+
+  
+  //the line that displays the position in the track
+  stroke(230);
+  strokeWeight(2);
+  fill(230);
+  float lineX = map(song.position(), 0, song.length(), 0, width);   
+  line(lineX, height, lineX, height-15);
 }
 
 
@@ -102,11 +106,13 @@ void draw () {
 //////////////////////////////////////////
 //////////////// METHODS ////////////////
 
-void beat (int songPos, Drum dr) {
-  if (song.position() > songPos && song.position() < songPos+150) {
-    dr.beat();
-  } else {
+void beat (int songPos, Drum dr, int strength) {
+  if (song.position() > songPos && song.position() < songPos+130) {
+    dr.beat(strength);
+  } else if (song.position() >= songPos+130 && song.position() < songPos+170) {
     dr.growing = true;
+    dr.sizeX = width/2;
+    dr.sizeY = height/2;
   }
 }
 
