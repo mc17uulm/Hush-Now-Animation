@@ -10,6 +10,9 @@ BeatDetect beat;
 PImage peace;
 int peaceAlpha;
 
+SoloGit soloGit;
+PVector pvSG;
+
 Drum drumUL, drumUR, drumLL, drumLR;
 PVector pvUL, pvUR, pvLL, pvLR;
 
@@ -24,7 +27,17 @@ void setup() {
   peace = loadImage("peace.png");
   peaceAlpha = 0;
 
-  ////// DRUM PADS ///////
+  /////// SOLO GUITAR ///////
+  color red1 = color (100, 10, 20);
+  color red2 = color (170, 10, 40);
+  color red3 = color (230, 10, 60);
+  color red4 = color (255, 10, 100);
+  
+  pvSG = new PVector(width/2, height/2);
+  soloGit = new SoloGit (pvSG, 50, red1, red2, red3, red4);
+
+
+  /////// DRUM PADS ///////
   //color red = color(255,50,50);
   color red = color(230, 3, 10);
   //color green = color(0,204,0);
@@ -46,8 +59,8 @@ void setup() {
 
   //  manchmal hängt es bei mir (luis) am anfang extrem,
   //  und nach 1-2 sek ist es normal. das hier mit dem skip behebt es fuer mich 
-  //  song.skip(5000);
-  //  song.skip(-5000);
+  song.skip(5000);
+  song.skip(-5000);
 
   song.play();
   songPlaying = true;
@@ -75,7 +88,7 @@ void draw () {
   beat(10460, drumUR, 12);
   beat(11040, drumLR, 12);
   beat(11217, drumLL, 12);
-  
+
   beat(11539, drumUL, 12);
   beat(11770, drumUR, 12);
   beat(12116, drumLR, 12);
@@ -83,15 +96,11 @@ void draw () {
   beat(12466, drumUR, 24);
   beat(12638, drumUL, 24);
   beat(12638, drumLR, 24);
-
-
-
-  // test guitar
-  stroke(250, 50, 50, 200);
-  fill(250, 50, 50, 150);
-  ellipse(width/2, height/2, 50 * (2 + song.mix.get(500)), 50 * (2 + song.mix.level()));
-
   
+
+  //run the solo guitar code
+  soloGit.run();
+
   //the line that displays the position in the track
   stroke(230);
   strokeWeight(2);
@@ -113,6 +122,7 @@ void beat (int songPos, Drum dr, int strength) {
     dr.growing = true;
     dr.sizeX = width/2;
     dr.sizeY = height/2;
+    dr.fillAlpha = 150;
   }
 }
 

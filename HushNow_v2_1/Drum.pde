@@ -31,9 +31,9 @@ class Drum {
       sizeY += beatStrength;
       fillAlpha += 20;
     } else if (sizeX > width/2){
-      sizeX -= beatStrength;
-      sizeY -= beatStrength;
-      fillAlpha -= 20;
+      sizeX -= beatStrength/2;
+      sizeY -= beatStrength/2;
+      fillAlpha -= 10;
     }
     if (sizeX == (width/2)+(beatStrength*3)) {
       growing = false;
