@@ -1,7 +1,6 @@
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-
 Minim minim;
 AudioInput in;
 AudioPlayer song;
@@ -28,14 +27,13 @@ void setup() {
   peaceAlpha = 0;
 
   /////// SOLO GUITAR ///////
-  color red1 = color (100, 10, 20);
-  color red2 = color (170, 10, 40);
-  color red3 = color (230, 10, 60);
-  color red4 = color (255, 10, 100);
-  
+  color red1 = color (255, 10, 100);
+  color red2 = color (230, 10, 60);
+  color red3 = color (170, 10, 40); 
+  color red4 = color (100, 10, 20);
+
   pvSG = new PVector(width/2, height/2);
   soloGit = new SoloGit (pvSG, 50, red1, red2, red3, red4);
-
 
   /////// DRUM PADS ///////
   //color red = color(255,50,50);
@@ -78,12 +76,14 @@ void draw () {
     //for stability
     peaceAlpha = 0;
   }
-
+  
+  // display drums
   drumUL.display();
   drumUR.display();
   drumLL.display();
   drumLR.display();
-
+  
+  /////// ALL THE BEATS ///////
   beat(10050, drumUL, 12);
   beat(10460, drumUR, 12);
   beat(11040, drumLR, 12);
@@ -97,6 +97,15 @@ void draw () {
   beat(12638, drumUL, 24);
   beat(12638, drumLR, 24);
   
+  
+  beat(24524, drumLL, 12);
+  beat(24524, drumUR, 12);
+  beat(24795, drumLL, 12);
+  beat(24795, drumUR, 12);
+  beat(25100, drumLR, 24);
+  beat(25100, drumUL, 24);
+  
+
 
   //run the solo guitar code
   soloGit.run();
@@ -138,7 +147,7 @@ void showPeace() {
 
 
 /*
-* klappt noch nicht,
+ * klappt noch nicht,
  * es darf nicht nach jedem durchlauf
  * eine verschiedene drum angesprochen werden
  *
@@ -212,7 +221,6 @@ void mousePressed() {
   song.cue(mousePos);
   redraw();
 }
-
 
 //working, but really slowing down when rewinding with this method
 void mouseDragged() {
