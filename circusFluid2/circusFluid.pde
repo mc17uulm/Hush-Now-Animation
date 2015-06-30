@@ -15,10 +15,14 @@ bluethen (@) gmail.com
 */
 
 // Variables for the timeStep
-float x, y, px, py;
+float y = 240;
+float x = 320;
+float py = 240;
+float px = 320;
+int counter = 0;
 long previousTime;
 long currentTime;
-float timeScale = 0.5; // Play with this to slow down or speed up the fluid (the higher, the faster)
+float timeScale = 1; // Play with this to slow down or speed up the fluid (the higher, the faster)
 final int fixedDeltaTime = (int)(10 / timeScale);
 float fixedDeltaTimeSeconds = (float)fixedDeltaTime / 1000;
 float leftOverDeltaTime = 0;
@@ -32,13 +36,14 @@ void setup () {
   noStroke();
   
   // grid = new GridSolver(integer cellWidth)
-  grid = new GridSolver(5); 
+  grid = new GridSolver(3); 
 }
 
 void draw () {
   /******** Physics ********/
   // time related stuff
-  println(x);
+  counter++;
+  
   // Calculate amount of time since last frame (Delta means "change in")
   currentTime = millis();
   long deltaTimeMS = (long)((currentTime - previousTime));
@@ -52,27 +57,25 @@ void draw () {
   
   if (timeStepAmt > 15) {
     timeStepAmt = 15; // too much accumulation can freeze the program!
-    println("Time step amount too high");
   }
   
   // Update physics
   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
     grid.solve(fixedDeltaTimeSeconds * timeScale);
   }
-  draw_line();
-  drop();
+  
+  if(counter == 8){
+    drop();
+    counter = 0;
+  }
   grid.draw();
   //println(frameRate);
 }
 
 /* Interation stuff below this line */
 
-void draw_line () {
+void drag () {
   // The ripple size will be determined by mouse speed
-  x = random(0, 639);
-  y = random(0, 479);
-  px = random(0,639);
-  py = random(0, 479);
   float force = dist(x, y, px, py) * 255;
   
   /* This is bresenham's line algorithm
@@ -119,7 +122,7 @@ void drop () {
   float force = 250000;
   if (((int)(x / grid.cellSize) < grid.density.length) && ((int)(y / grid.cellSize) < grid.density[0].length) &&
     ((int)(x / grid.cellSize) > 0) && ((int)(y / grid.cellSize) > 0)) {
-    grid.velocity[(int)(y / grid.cellSize)][(int)(y / grid.cellSize)] += force;
+    grid.velocity[(int)(x / grid.cellSize)][(int)(y / grid.cellSize)] += force;
   }
 }
 
