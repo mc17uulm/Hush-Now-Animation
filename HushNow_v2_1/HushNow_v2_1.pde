@@ -1,8 +1,6 @@
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-circusFluid circus;
-
 Minim minim;
 AudioInput in;
 AudioPlayer song;
@@ -63,11 +61,7 @@ void setup() {
   song.skip(-5000);
 
   song.play();
-  songPlaying = true; 
-  
-  
-  circus = new circusFluid();
-  
+  songPlaying = true;
 }
 
 
@@ -122,8 +116,6 @@ void draw () {
   fill(230);
   float lineX = map(song.position(), 0, song.length(), 0, width);   
   line(lineX, height, lineX, height-15);
-  
-  circus.draw();
 }
 
 
