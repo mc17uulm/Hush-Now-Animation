@@ -33,17 +33,17 @@ void setup() {
   color red4 = color (100, 10, 20);
 
   pvSG = new PVector(width/2, height/2);
-  soloGit = new SoloGit (pvSG, 50, red1, red2, red3, red4);
+  soloGit = new SoloGit (pvSG, 200, red1, red2, red3, red4);
 
   /////// DRUM PADS ///////
   //color red = color(255,50,50);
-  color red = color(230, 3, 10);
+  color red = color(173, 3, 32);
   //color green = color(0,204,0);
-  color green = color(0, 198, 19);
+  color green = color(110, 2, 20);
   //color blue = color(0,204,255);
-  color blue = color(0, 122, 221);
+  color blue = color(250, 4, 46);
   //color yellow = color(255,230,0);
-  color yellow = color(226, 210, 0);
+  color yellow = color(212, 3, 39);
 
   pvUL = new PVector(width/4, height/4);
   pvUR = new PVector(3*width/4, height/4);
@@ -84,14 +84,14 @@ void draw () {
   drumLR.display();
   
   /////// ALL THE BEATS ///////
-  beat(10050, drumUL, 12);
-  beat(10460, drumUR, 12);
-  beat(11040, drumLR, 12);
-  beat(11217, drumLL, 12);
+  beat(10050, drumUL, 30);
+  beat(10460, drumUR, 30);
+  beat(11040, drumLR, 30);
+  beat(11217, drumLL, 30);
 
-  beat(11539, drumUL, 12);
-  beat(11770, drumUR, 12);
-  beat(12116, drumLR, 12);
+  beat(11539, drumUL, 30);
+  beat(11770, drumUR, 30);
+  beat(12116, drumLR, 30);
   beat(12466, drumLL, 24);
   beat(12466, drumUR, 24);
   beat(12638, drumUL, 24);
