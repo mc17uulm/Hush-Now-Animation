@@ -14,6 +14,9 @@ Feel free to email me feedback, criticism, advice, job offers at:
 bluethen (@) gmail.com
 */
 
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+
 // Variables for the timeStep
 float y = 240;
 float x = 320;
@@ -27,19 +30,44 @@ final int fixedDeltaTime = (int)(10 / timeScale);
 float fixedDeltaTimeSeconds = (float)fixedDeltaTime / 1000;
 float leftOverDeltaTime = 0;
 
+
+int[] beats = {10050, 10460, 11040, 11217,
+                11539, 11770, 12116, 12566, 12638,
+                24524, 24795, 25100};
+
+
 // The grid for fluid solving
 GridSolver grid;
 
+Minim minim;
+AudioPlayer song;
+BeatDetect beat;
+
 void setup () {
-  size(640, 480, P2D);
+  size(800, 600, P2D);
   colorMode(HSB, 255);
   noStroke();
   
+  x = width/2;
+  y = height/2;
+  px = width/2;
+  py = height/2;
+  
   // grid = new GridSolver(integer cellWidth)
-  grid = new GridSolver(3); 
+  grid = new GridSolver(5);
+  
+  System.out.println(song.mix.level());
+  
+  minim = new Minim(this);
+  song = minim.loadFile("hush.mp3", 512);
+  beat = new BeatDetect(song.bufferSize(), song.sampleRate());
+  
+  song.play();
 }
 
 void draw () {
+  beat.detect(song.mix);
+  
   /******** Physics ********/
   // time related stuff
   counter++;
@@ -64,10 +92,19 @@ void draw () {
     grid.solve(fixedDeltaTimeSeconds * timeScale);
   }
   
-  if(counter == 8){
-    drop();
-    counter = 0;
+  //make all the beats
+  for (int i : beats) {
+    drop(i);
   }
+  
+ /* switch (song.position()) {
+    case 2000:   drop();
+                 break;
+    
+  }
+  */
+  
+  
   grid.draw();
   //println(frameRate);
 }
@@ -123,6 +160,12 @@ void drop () {
   if (((int)(x / grid.cellSize) < grid.density.length) && ((int)(y / grid.cellSize) < grid.density[0].length) &&
     ((int)(x / grid.cellSize) > 0) && ((int)(y / grid.cellSize) > 0)) {
     grid.velocity[(int)(x / grid.cellSize)][(int)(y / grid.cellSize)] += force;
+  }
+}
+
+void drop (int pos) {
+  if (song.position() > pos && song.position() < pos+100) {
+    drop();
   }
 }
 
