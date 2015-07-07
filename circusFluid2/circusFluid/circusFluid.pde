@@ -20,7 +20,10 @@ import ddf.minim.analysis.*;
 // Variables for the timeStep
 float y, x, px, py;
 
-// Größe der Pixel
+// staerke des drops
+float force;
+
+// Groeße der Pixel
 int pixel = 3;
 
 // Anzahl der Tropfen in Frames
@@ -51,6 +54,8 @@ void setup () {
   size(800, 600, P2D);
   colorMode(HSB, 255);
   noStroke();
+  
+  force = 250000;
   
   x = width/2;
   y = height/2;
@@ -163,7 +168,6 @@ void drag () {
 
 // If the user clicks instead of drags the mouse, we create a ripple at one spot.
 void drop () {
-  float force = 250000;
   if (((int)(x / grid.cellSize) < grid.density.length) && ((int)(y / grid.cellSize) < grid.density[0].length) &&
     ((int)(x / grid.cellSize) > 0) && ((int)(y / grid.cellSize) > 0)) {
     grid.velocity[(int)(x / grid.cellSize)][(int)(y / grid.cellSize)] += force;
@@ -176,3 +180,16 @@ void drop () {
   }
 }*/
 
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) {
+      force += 100000;
+    } 
+    if (keyCode == DOWN) {
+      force -= 100000;
+    }
+  }
+  
+  
+}
