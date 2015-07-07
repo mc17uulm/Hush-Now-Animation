@@ -18,10 +18,14 @@ import ddf.minim.*;
 import ddf.minim.analysis.*;
 
 // Variables for the timeStep
-float y = 240;
-float x = 320;
-float py = 240;
-float px = 320;
+float y, x, px, py;
+
+// Größe der Pixel
+int pixel = 3;
+
+// Anzahl der Tropfen in Frames
+int beat_drop = 9;
+
 int counter = 0;
 long previousTime;
 long currentTime;
@@ -54,9 +58,9 @@ void setup () {
   py = height/2;
   
   // grid = new GridSolver(integer cellWidth)
-  grid = new GridSolver(5);
+  grid = new GridSolver(pixel);
   
-  System.out.println(song.mix.level());
+  //System.out.println(song.mix.level());
   
   minim = new Minim(this);
   song = minim.loadFile("hush.mp3", 512);
@@ -66,7 +70,7 @@ void setup () {
 }
 
 void draw () {
-  beat.detect(song.mix);
+  //beat.detect(song.mix);
   
   /******** Physics ********/
   // time related stuff
@@ -92,10 +96,13 @@ void draw () {
     grid.solve(fixedDeltaTimeSeconds * timeScale);
   }
   
-  //make all the beats
-  for (int i : beats) {
+  if(counter == beat_drop){
+    drop();
+    counter = 0;
+  }  //make all the beats
+  /**for (int i : beats) {
     drop(i);
-  }
+  }*/
   
  /* switch (song.position()) {
     case 2000:   drop();
@@ -163,9 +170,9 @@ void drop () {
   }
 }
 
-void drop (int pos) {
+/**void drop (int pos) {
   if (song.position() > pos && song.position() < pos+100) {
     drop();
   }
-}
+}*/
 
