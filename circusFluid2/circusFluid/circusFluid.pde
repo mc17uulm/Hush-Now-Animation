@@ -24,10 +24,10 @@ float y, x, px, py;
 float force;
 
 // Groeße der Pixel
-int pixel = 3;
+int pixelSize = 4;
 
-// Anzahl der Tropfen in Frames
-int beat_drop = 9;
+// Anzahl der Frames zwischen zwei drops
+int beat_drop = 20;
 
 int counter = 0;
 long previousTime;
@@ -55,7 +55,7 @@ void setup () {
   colorMode(HSB, 255);
   noStroke();
   
-  force = 250000;
+  force = 25000;
   
   x = width/2;
   y = height/2;
@@ -63,9 +63,7 @@ void setup () {
   py = height/2;
   
   // grid = new GridSolver(integer cellWidth)
-  grid = new GridSolver(pixel);
-  
-  //System.out.println(song.mix.level());
+  grid = new GridSolver(pixelSize);
   
   minim = new Minim(this);
   song = minim.loadFile("hush.mp3", 512);
@@ -75,6 +73,7 @@ void setup () {
 }
 
 void draw () {
+  
   //beat.detect(song.mix);
   
   /******** Physics ********/
@@ -101,27 +100,23 @@ void draw () {
     grid.solve(fixedDeltaTimeSeconds * timeScale);
   }
   
+  
+  /*
+  * drop alle x sekunden
+  
   if(counter == beat_drop){
     drop();
     counter = 0;
-  }  //make all the beats
-  /**for (int i : beats) {
-    drop(i);
-  }*/
-  
- /* switch (song.position()) {
-    case 2000:   drop();
-                 break;
-    
   }
   */
   
-  
   grid.draw();
+  guitarDrops();
   //println(frameRate);
+
 }
 
-/* Interation stuff below this line */
+//////////////// FUNCTIONS ////////////////
 
 void drag () {
   // The ripple size will be determined by mouse speed
@@ -174,20 +169,28 @@ void drop () {
   }
 }
 
-/**void drop (int pos) {
-  if (song.position() > pos && song.position() < pos+100) {
+
+
+//drop mit abgegriffenen werten
+void guitarDrops() {
+  force = abs(400000*song.mix.get(500)) + 10000*song.mix.level();
+  if (force > 50000) {
     drop();
+    //evtl. grid.speed mit veraendern, um staerkeren effekt zu bekommen?
   }
-}*/
+  
+}
+
+
 
 
 void keyPressed() {
   if (key == CODED) {
-    if (keyCode == UP) {
-      force += 100000;
+    if (keyCode == UP && grid.speed <= 21) {
+      grid.speed += 0.25;
     } 
-    if (keyCode == DOWN) {
-      force -= 100000;
+    if (keyCode == DOWN && force > 19) {
+      grid.speed -= 0.25;
     }
   }
   
