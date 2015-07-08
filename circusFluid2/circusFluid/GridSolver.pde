@@ -29,7 +29,9 @@ class GridSolver {
   void draw () {
     for (int x = 0; x < velocity.length; x++) {
       for (int y = 0; y < velocity[x].length; y++) {
-        /* Sine probably isn't needed, but oh well. It's pretty and looks more organic. */
+        /* HIER kommt die zeile, in der man mit der farbe rumspielen kann.
+         * (ich habs versucht auf rgb zu stellen und dann irgendwie schoen zu kriegen, aber eigentlich koennen wir auch alles in hsb machen)
+         */
         fill(127 + 127 * sin(density[x][y]*0.0004), 255, 127 + 127 * sin(velocity[x][y]*0.01));
         rect(x*cellSize, y*cellSize, cellSize, cellSize);
       }
