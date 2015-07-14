@@ -182,17 +182,15 @@ void guitarDrops() {
 }
 
 
-
-
 void keyPressed() {
-  if (key == CODED) {
-    if (keyCode == UP && grid.speed <= 21) {
-      grid.speed += 0.25;
-    } 
-    if (keyCode == DOWN && force > 19) {
-      grid.speed -= 0.25;
-    }
+  if (key == '3') {
+    grid.speed = 21.25;
   }
-  
+  if (key == '2') {
+    grid.speed = 20;
+  }
+  if (key == '1') {
+    grid.speed = 19;
+  }
   
 }
