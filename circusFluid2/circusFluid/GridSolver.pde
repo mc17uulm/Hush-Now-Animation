@@ -32,7 +32,7 @@ class GridSolver {
         /* HIER kommt die zeile, in der man mit der farbe rumspielen kann.
          * (ich habs versucht auf rgb zu stellen und dann irgendwie schoen zu kriegen, aber eigentlich koennen wir auch alles in hsb machen)
          */
-        fill(127 + 127 * sin(density[x][y]*0.0004), 255, 127 + 127 * sin(velocity[x][y]*0.01));
+        fill(127 + 127 * sin(density[x][y]*0.0004), 255, 200 + 127 * sin(velocity[x][y]*0.01));
         rect(x*cellSize, y*cellSize, cellSize, cellSize);
       }
     }

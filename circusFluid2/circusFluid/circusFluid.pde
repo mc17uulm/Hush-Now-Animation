@@ -1,18 +1,18 @@
 /* OpenProcessing Tweak of *@*http://www.openprocessing.org/sketch/29833*@* */
 /* !do not delete the line above, required for linking your tweak if you upload again */
 /* 
-Circus Fluid
-Made by Jared "BlueThen" C. on June 5th, 2011.
-Updated June 7th, 2011 (Commenting, refactoring, coloring changes)
-
-www.bluethen.com
-www.twitter.com/BlueThen
-www.openprocessing.org/portal/?userID=3044
-www.hawkee.com/profile/37047/
-
-Feel free to email me feedback, criticism, advice, job offers at:
-bluethen (@) gmail.com
-*/
+ Circus Fluid
+ Made by Jared "BlueThen" C. on June 5th, 2011.
+ Updated June 7th, 2011 (Commenting, refactoring, coloring changes)
+ 
+ www.bluethen.com
+ www.twitter.com/BlueThen
+ www.openprocessing.org/portal/?userID=3044
+ www.hawkee.com/profile/37047/
+ 
+ Feel free to email me feedback, criticism, advice, job offers at:
+ bluethen (@) gmail.com
+ */
 
 import ddf.minim.*;
 import ddf.minim.analysis.*;
@@ -37,10 +37,14 @@ final int fixedDeltaTime = (int)(10 / timeScale);
 float fixedDeltaTimeSeconds = (float)fixedDeltaTime / 1000;
 float leftOverDeltaTime = 0;
 
+boolean songPlaying;
 
-int[] beats = {10050, 10460, 11040, 11217,
-                11539, 11770, 12116, 12566, 12638,
-                24524, 24795, 25100};
+
+int[] beats = {
+  10050, 10460, 11040, 11217, 
+  11539, 11770, 12116, 12566, 12638, 
+  24524, 24795, 25100
+};
 
 
 // The grid for fluid solving
@@ -54,66 +58,65 @@ void setup () {
   size(800, 600, P2D);
   colorMode(HSB, 255);
   noStroke();
-  
+
   force = 25000;
-  
+
   x = width/2;
   y = height/2;
   px = width/2;
   py = height/2;
-  
+
   // grid = new GridSolver(integer cellWidth)
   grid = new GridSolver(pixelSize);
-  
+
   minim = new Minim(this);
   song = minim.loadFile("hush.mp3", 512);
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
   
-  song.play();
+  songPlaying = false;
 }
 
 void draw () {
-  
+
   //beat.detect(song.mix);
-  
+
   /******** Physics ********/
   // time related stuff
   counter++;
-  
+
   // Calculate amount of time since last frame (Delta means "change in")
   currentTime = millis();
   long deltaTimeMS = (long)((currentTime - previousTime));
   previousTime = currentTime; // reset previousTime
-  
-  // timeStepAmt will be how many of our fixedDeltaTimes we need to make up for the passed time since last frame. 
+
+    // timeStepAmt will be how many of our fixedDeltaTimes we need to make up for the passed time since last frame. 
   int timeStepAmt = (int)(((float)deltaTimeMS + leftOverDeltaTime) / (float)(fixedDeltaTime));
-  
+
   // If we have any left over time left, add it to the leftOverDeltaTime.
   leftOverDeltaTime += deltaTimeMS - (timeStepAmt * (float)fixedDeltaTime); 
-  
+
   if (timeStepAmt > 15) {
     timeStepAmt = 15; // too much accumulation can freeze the program!
   }
-  
+
   // Update physics
   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
     grid.solve(fixedDeltaTimeSeconds * timeScale);
   }
-  
-  
+
+
   /*
   * drop alle x sekunden
-  
-  if(counter == beat_drop){
-    drop();
-    counter = 0;
-  }
-  */
-  
+   
+   if(counter == beat_drop){
+   drop();
+   counter = 0;
+   }
+   */
+
   grid.draw();
   guitarDrops();
   //println(frameRate);
-
 }
 
 //////////////// FUNCTIONS ////////////////
@@ -121,12 +124,12 @@ void draw () {
 void drag () {
   // The ripple size will be determined by mouse speed
   float force = dist(x, y, px, py) * 255;
-  
+
   /* This is bresenham's line algorithm
-     http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
-     Instead of plotting points for a line, we create a ripple for each pixel between the
-     last cursor pos and the current cursor pos 
-  */
+   http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+   Instead of plotting points for a line, we create a ripple for each pixel between the
+   last cursor pos and the current cursor pos 
+   */
   float dx = abs(x - px);
   float dy = abs(y - py);
   float sx;
@@ -178,7 +181,6 @@ void guitarDrops() {
     drop();
     //evtl. grid.speed mit veraendern, um staerkeren effekt zu bekommen?
   }
-  
 }
 
 
@@ -192,5 +194,13 @@ void keyPressed() {
   if (key == '1') {
     grid.speed = 19;
   }
-  
+
+  if (key == ' ' && songPlaying) {
+    song.pause();
+    songPlaying = false;
+  } else if (key == ' ' && !songPlaying) {
+    song.play();
+    songPlaying = true;
+  }
 }
+
