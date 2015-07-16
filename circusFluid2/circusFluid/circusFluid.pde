@@ -28,8 +28,8 @@ int pixelSize = 4;
 
 // Anzahl der Frames zwischen zwei drops
 int beat_drop = 20;
-
 int counter = 0;
+
 long previousTime;
 long currentTime;
 float timeScale = 1; // Play with this to slow down or speed up the fluid (the higher, the faster)
@@ -117,6 +117,14 @@ void draw () {
   grid.draw();
   guitarDrops();
   //println(frameRate);
+  
+  
+  grid.speed = map(song.mix.level(), 0, 1, 19, 29.5); //oder so ähnlich
+  
+  fill(0);
+  text(timeScale, 20, 20);
+  text(grid.speed, 20, 40);
+  
 }
 
 //////////////// FUNCTIONS ////////////////
@@ -185,6 +193,16 @@ void guitarDrops() {
 
 
 void keyPressed() {
+  
+  if (key == CODED) {
+    if (keyCode == UP) {
+      timeScale += 0.005;
+    }
+    if (keyCode == DOWN) {
+      timeScale -= 0.005;
+    }
+  }
+  
   if (key == '3') {
     grid.speed = 21.25;
   }
