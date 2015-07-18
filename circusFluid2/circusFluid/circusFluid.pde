@@ -24,7 +24,7 @@ float y, x, px, py;
 float force;
 
 // Groeße der Pixel
-int pixelSize = 4;
+int pixelSize = 3;
 
 // Anzahl der Frames zwischen zwei drops
 int beat_drop = 20;
@@ -50,8 +50,10 @@ int[] beats = {
 // The grid for fluid solving
 GridSolver grid;
 
+// Audio stuff
 Minim minim;
 AudioPlayer song;
+AudioInput in;
 BeatDetect beat;
 
 void setup () {
@@ -66,10 +68,10 @@ void setup () {
   px = width/2;
   py = height/2;
 
-  // grid = new GridSolver(integer cellWidth)
   grid = new GridSolver(pixelSize);
-
+  
   minim = new Minim(this);
+  in = minim.getLineIn();
   song = minim.loadFile("hush.mp3", 512);
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
   
