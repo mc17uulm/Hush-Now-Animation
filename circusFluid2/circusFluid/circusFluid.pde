@@ -24,7 +24,7 @@ float y, x, px, py;
 float force;
 
 // Groeße der Pixel
-int pixelSize = 3;
+int pixelSize = 4;
 
 // Anzahl der Frames zwischen zwei drops
 int beat_drop = 20;
