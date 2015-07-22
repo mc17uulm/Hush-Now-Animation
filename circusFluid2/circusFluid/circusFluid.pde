@@ -24,6 +24,22 @@ ControlP5 gui;
 
 Textlabel head;
 Textlabel labelA;
+ColorPicker cp;
+
+Slider hSlider;
+Slider sSlider;
+Slider bSlider;
+Slider pixelSlider;
+
+int h = 0;
+int s = 0;
+int b = 0;
+
+/*float flowerNum; 
+int flowerBackgroundColor = 0;
+
+float flowerW = 150;
+float flowerH = 150;*/
 
 PFont hendrix;
 // Variables for the timeStep
@@ -33,7 +49,7 @@ float y, x, px, py;
 float force;
 
 // Groeße der Pixel
-int pixelSize = 5;
+int pixel = 1;
 
 // Anzahl der Frames zwischen zwei drops
 int beat_drop = 20;
@@ -82,10 +98,10 @@ void setup () {
   px = width/2;
   py = height/2;
 
-  grid = new GridSolver(pixelSize);
+  grid = new GridSolver(pixel);
   
   minim = new Minim(this);
-  in = minim.getLineIn();
+ // in = minim.getLineIn();
   song = minim.loadFile("hush.mp3", 512);
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
   
@@ -146,22 +162,22 @@ void draw () {
   grid.speed = map(song.mix.level(), 0, 1, 19, 29.5); //oder so ähnlich
   
   fill(0);
-  text(timeScale, 20, 20);
-  text(grid.speed, 20, 40);
+  /*text(timeScale, 20, 20);
+  text(grid.speed, 20, 40);*/
   
 }
 
 //////////////// FUNCTIONS ////////////////
 
-void drag () {
+/**void drag () {
   // The ripple size will be determined by mouse speed
   float force = dist(x, y, px, py) * 255;
 
-  /* This is bresenham's line algorithm
+   This is bresenham's line algorithm
    http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
    Instead of plotting points for a line, we create a ripple for each pixel between the
    last cursor pos and the current cursor pos 
-   */
+   
   float dx = abs(x - px);
   float dy = abs(y - py);
   float sx;
@@ -194,7 +210,7 @@ void drag () {
       y0 = y0 + sy;
     }
   }
-}
+}*/
 
 // If the user clicks instead of drags the mouse, we create a ripple at one spot.
 void drop () {
@@ -248,6 +264,30 @@ void keyPressed() {
 
 void startGUI(){
   
+  color hsb;
+  colorMode(HSB, h, s, b);
+  hsb = color(h, s, b);
+    
+  /*rect(850, 100, flowerW+1, flowerH+1);
+  translate(flowerW/2, flowerH/2);
+    for (int i = 0; i < 360; i+=2) {
+      
+      float angle = sin(i+flowerNum)*50;
+      
+      float x = sin(radians(i))*(150+angle);
+      float y = cos(radians(i))*(150+angle);
+      float x2 = sin(radians(i))*(100+angle);
+      float y2 = cos(radians(i))*(100+angle);
+      
+      stroke(h, s, b);
+      fill(h, s, b);
+      ellipse(x, y, angle/5, angle/5);
+      ellipse(y2, x2, 5, 5);
+      line(x, y, x2, y2);
+    }
+    flowerNum+=0.01;
+    */
+  
   head = gui.addTextlabel("headlabel")
     .setText("Jimmy Hendrix - Hush Now")
     .setPosition(100,50)
@@ -257,7 +297,7 @@ void startGUI(){
     
   labelA = gui.addTextlabel("labelA")
     .setText("Settings: ")
-    .setPosition(950, 150)
+    .setPosition(950, 350)
     .setColorValue(0xffffffff)
     .setFont(createFont("arial", 20))
    ; 
@@ -265,23 +305,69 @@ void startGUI(){
   
   gui.addButton("Start")
     .setValue(0)
-    .setPosition(950, 800)
+    .setPosition(950, 900)
     .setSize(100, 25)
     ;
-    
-} 
-    
-  
 
-public void controlEvent(ControlEvent theEvent){
-  println(theEvent.getController().getName());
+  hSlider = gui.addSlider("h")
+    .setPosition(1200, 390)
+    .setSize(200, 25)
+    .setRange(1, 359)
+    .setValue(176)
+    ;
+    
+  bSlider = gui.addSlider("b")
+    .setPosition(1200, 470)
+    .setSize(200, 25)
+    .setRange(0, 99)
+    .setValue(49)
+    ;
+    
+  sSlider = gui.addSlider("s")
+    .setPosition(1200, 430)
+    .setSize(200, 25)
+    .setRange(0, 99)
+    .setValue(48)
+    ;
+    
+  pixelSlider = gui.addSlider("pixel")
+    .setPosition(1200, 510)
+    .setSize(200, 25)
+    .setRange(1, 7)
+    .setValue(5)
+    .setNumberOfTickMarks(7)
+    ;
+} 
+
+void h(int theColor){
+  h = theColor;
+}
+
+void b(int theColor){
+  b = theColor;
+}
+
+void s(int theColor){
+  s = theColor;
+}
+
+void pixel(int thePixel){
+  pixel = thePixel;
+  println(pixel);
 }
 
 public void Start(int theValue){
   song.play();
+  enableGUI();
+  colorMode(HSB, h, s, b);
+} 
+
+void enableGUI(){
   gui.controller("Start").setVisible(false);
   head.setVisible(false);
   labelA.setVisible(false);
-  colorMode(HSB, 255);
-} 
-
+  hSlider.setVisible(false);
+  sSlider.setVisible(false);
+  bSlider.setVisible(false);
+  pixelSlider.setVisible(false);
+}
