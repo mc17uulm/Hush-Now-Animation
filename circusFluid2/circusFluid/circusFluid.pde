@@ -225,7 +225,7 @@ void drop () {
 //drop mit abgegriffenen werten
 void guitarDrops() {
   force = abs(400000*song.mix.get(500)) + 10000*song.mix.level();
-  if (force > 50000) {
+  if (force > 35000) {
     drop();
     //evtl. grid.speed mit veraendern, um staerkeren effekt zu bekommen?
   }
