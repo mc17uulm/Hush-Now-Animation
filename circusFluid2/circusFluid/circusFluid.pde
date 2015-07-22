@@ -14,9 +14,18 @@
  bluethen (@) gmail.com
  */
 
+import processing.opengl.*;
+import javax.media.opengl.*;
+import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
+ControlP5 gui;
+
+Textlabel head;
+Textlabel labelA;
+
+PFont hendrix;
 // Variables for the timeStep
 float y, x, px, py;
 
@@ -24,7 +33,7 @@ float y, x, px, py;
 float force;
 
 // Groeße der Pixel
-int pixelSize = 4;
+int pixelSize = 5;
 
 // Anzahl der Frames zwischen zwei drops
 int beat_drop = 20;
@@ -57,9 +66,14 @@ AudioInput in;
 BeatDetect beat;
 
 void setup () {
-  size(800, 600, P2D);
-  colorMode(HSB, 255);
+  size(1920, 1080, OPENGL);
+  colorMode(RGB, 0, 0, 0);
   noStroke();
+  
+  gui = new ControlP5(this);
+  
+  Terminal t = new Terminal();
+  startGUI();
 
   force = 25000;
 
@@ -76,6 +90,13 @@ void setup () {
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
   
   songPlaying = false;
+}
+
+class Terminal{
+  
+  Terminal(){
+     hendrix = loadFont("hendrix.vlw");
+  }
 }
 
 void draw () {
@@ -100,6 +121,7 @@ void draw () {
   if (timeStepAmt > 15) {
     timeStepAmt = 15; // too much accumulation can freeze the program!
   }
+  
 
   // Update physics
   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
@@ -223,4 +245,43 @@ void keyPressed() {
     songPlaying = true;
   }
 }
+
+void startGUI(){
+  
+  head = gui.addTextlabel("headlabel")
+    .setText("Jimmy Hendrix - Hush Now")
+    .setPosition(100,50)
+    .setColorValue(0xffffffff)
+    .setFont(hendrix)
+    ;
+    
+  labelA = gui.addTextlabel("labelA")
+    .setText("Settings: ")
+    .setPosition(950, 150)
+    .setColorValue(0xffffffff)
+    .setFont(createFont("arial", 20))
+   ; 
+    
+  
+  gui.addButton("Start")
+    .setValue(0)
+    .setPosition(950, 800)
+    .setSize(100, 25)
+    ;
+    
+} 
+    
+  
+
+public void controlEvent(ControlEvent theEvent){
+  println(theEvent.getController().getName());
+}
+
+public void Start(int theValue){
+  song.play();
+  gui.controller("Start").setVisible(false);
+  head.setVisible(false);
+  labelA.setVisible(false);
+  colorMode(HSB, 255);
+} 
 
