@@ -81,8 +81,15 @@ AudioPlayer song;
 AudioInput in;
 BeatDetect beat;
 
+boolean sketchFullScreen(){
+  return true;
+}
+
 void setup () {
-  size(1280, 800, OPENGL);
+  size(displayWidth, displayHeight, OPENGL);
+  if(frame != null){
+    frame.setResizable(true);
+  }
   colorMode(RGB, 0, 0, 0);
   noStroke();
   
