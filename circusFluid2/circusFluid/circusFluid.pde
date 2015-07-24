@@ -82,7 +82,7 @@ AudioInput in;
 BeatDetect beat;
 
 void setup () {
-  size(1920, 1080, OPENGL);
+  size(1280, 800, OPENGL);
   colorMode(RGB, 0, 0, 0);
   noStroke();
   
@@ -92,9 +92,14 @@ void setup () {
   startGUI();
 
   force = 25000;
+// Updated upstream
 
   x = width/2;
   y = height/2;
+  
+  x = width/2;    //fuer mittelpunkt bestimmen
+  y = height/2;    // fuer mittelpunkt bestimmen
+// Stashed changes
   px = width/2;
   py = height/2;
 
@@ -297,7 +302,7 @@ void startGUI(){
     
   labelA = gui.addTextlabel("labelA")
     .setText("Settings: ")
-    .setPosition(950, 350)
+    .setPosition(850, 350)
     .setColorValue(0xffffffff)
     .setFont(createFont("arial", 20))
    ; 
@@ -305,33 +310,33 @@ void startGUI(){
   
   gui.addButton("Start")
     .setValue(0)
-    .setPosition(950, 900)
+    .setPosition(750, 600)
     .setSize(100, 25)
     ;
 
   hSlider = gui.addSlider("h")
-    .setPosition(1200, 390)
+    .setPosition(800, 390)
     .setSize(200, 25)
     .setRange(1, 359)
     .setValue(176)
     ;
     
   bSlider = gui.addSlider("b")
-    .setPosition(1200, 470)
+    .setPosition(800, 470)
     .setSize(200, 25)
     .setRange(0, 99)
     .setValue(49)
     ;
     
   sSlider = gui.addSlider("s")
-    .setPosition(1200, 430)
+    .setPosition(800, 430)
     .setSize(200, 25)
     .setRange(0, 99)
     .setValue(48)
     ;
     
   pixelSlider = gui.addSlider("pixel")
-    .setPosition(1200, 510)
+    .setPosition(800, 510)
     .setSize(200, 25)
     .setRange(1, 7)
     .setValue(5)
