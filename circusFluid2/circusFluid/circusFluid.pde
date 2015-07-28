@@ -277,7 +277,7 @@ void keyPressed() {
 void startGUI(){
   
   color hsb;
-  colorMode(HSB, h, s, b);
+  colorMode(HSB, 255);
   hsb = color(h, s, b);
     
   /*rect(850, 100, flowerW+1, flowerH+1);
@@ -371,7 +371,7 @@ void pixel(int thePixel){
 public void Start(int theValue){
   song.play();
   enableGUI();
-  colorMode(HSB, h, s, b);
+  colorMode(HSB, 255);
 } 
 
 void enableGUI(){
