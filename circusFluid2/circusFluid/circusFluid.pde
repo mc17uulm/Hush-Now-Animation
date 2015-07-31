@@ -12,7 +12,7 @@
  */
 
 // Groeße der Pixel
-int pixelSize = 15;
+int pixelSize = 5;
 
 
 import processing.opengl.*;
@@ -188,58 +188,12 @@ void draw () {
 
 //////////////// FUNCTIONS ////////////////
 
-/**void drag () {
-  // The ripple size will be determined by mouse speed
-  float force = dist(x, y, px, py) * 255;
-
-   This is bresenham's line algorithm
-   http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
-   Instead of plotting points for a line, we create a ripple for each pixel between the
-   last cursor pos and the current cursor pos 
-   
-  float dx = abs(x - px);
-  float dy = abs(y - py);
-  float sx;
-  float sy;
-  if (px < x)
-    sx = 1;
-  else
-    sx = -1;
-  if (py < y)
-    sy = 1;
-  else
-    sy = -1;
-  float err = dx - dy;
-  float x0 = px;
-  float x1 = x;
-  float y0 = py;
-  float y1 = y;
-  while ( (x0 != x1) || (y0 != y1)) {
-    // Make sure the coordinate is within the window
-    if (((int)(x0 / grid.cellSize) < grid.density.length) && ((int)(y0 / grid.cellSize) < grid.density[0].length) &&
-      ((int)(x0 / grid.cellSize) > 0) && ((int)(y0 / grid.cellSize) > 0))
-      grid.velocity[(int)(x0 / grid.cellSize)][(int)(y0 / grid.cellSize)] += force;
-    float e2 = 2 * err;
-    if (e2 > -dy) {
-      err -= dy;
-      x0 = x0 + sx;
-    }
-    if (e2 < dx) {
-      err = err + dx;
-      y0 = y0 + sy;
-    }
-  }
-}*/
-
-// If the user clicks instead of drags the mouse, we create a ripple at one spot.
 void drop () {
   if (((int)(x / grid.cellSize) < grid.density.length) && ((int)(y / grid.cellSize) < grid.density[0].length) &&
     ((int)(x / grid.cellSize) > 0) && ((int)(y / grid.cellSize) > 0)) {
     grid.velocity[(int)(x / grid.cellSize)][(int)(y / grid.cellSize)] += force;
   }
 }
-
-
 
 //drop mit abgegriffenen werten
 void guitarDrops() {
@@ -381,7 +335,7 @@ public void rottoene(){
 
 public void orangetoene(){
    hueSlider.setValue(28); 
-   variationSlider.setValue(30);
+   variationSlider.setValue(15);
 }
 
 public void regenbogen(){
