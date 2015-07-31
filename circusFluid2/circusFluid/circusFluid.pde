@@ -9,10 +9,11 @@
  www.twitter.com/BlueThen
  www.openprocessing.org/portal/?userID=3044
  www.hawkee.com/profile/37047/
- 
- Feel free to email me feedback, criticism, advice, job offers at:
- bluethen (@) gmail.com
  */
+
+// Groeße der Pixel
+int pixelSize = 15;
+
 
 import processing.opengl.*;
 import javax.media.opengl.*;
@@ -26,11 +27,7 @@ Textlabel head;
 Textlabel labelA;
 Textlabel presets;
 ColorPicker cp;
-/*
-Slider hSlider;
-Slider sSlider;
-Slider bSlider;
-*/
+
 Slider pixelSlider;
 Slider hueSlider;
 Slider variationSlider;
@@ -58,9 +55,6 @@ float y, x, px, py;
 
 // staerke des drops
 float force;
-
-// Groeße der Pixel
-int pixel = 5;
 
 // Anzahl der Frames zwischen zwei drops
 int beat_drop = 20;
@@ -122,7 +116,7 @@ void setup () {
   px = width/2;
   py = height/2;
 
-  grid = new GridSolver(pixel);
+  grid = new GridSolver(pixelSize);
   
   minim = new Minim(this);
  // in = minim.getLineIn();
