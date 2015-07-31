@@ -35,9 +35,7 @@ Slider hueSlider;
 Slider variationSlider;
 
 Toggle pastellYesNo;
-
 Button startButton;
-
 
 int farbschema = 127;
 int farbvariation = 127;
@@ -45,11 +43,12 @@ boolean pastell_version = false;
 
 /*float flowerNum; 
 int flowerBackgroundColor = 0;
-
 float flowerW = 150;
 float flowerH = 150;*/
 
 PFont hendrix;
+
+boolean guiVisible = true;
 
 // Variables for the timeStep
 float y, x, px, py;
@@ -285,7 +284,7 @@ void startGUI(){
     
   labelA = gui.addTextlabel("labelA")
     .setText("Settings: ")
-    .setPosition(850, 350)
+    .setPosition(100, 350)
     .setColorValue(0xffffffff)
     .setFont(createFont("arial", 30))
    ; 
@@ -293,32 +292,32 @@ void startGUI(){
   
   startButton = gui.addButton("Start")
     .setValue(0)
-    .setPosition(800, 600)
+    .setPosition(100, 600)
     .setSize(100, 25)
     .setVisible(true)
     ;
 
   hueSlider = gui.addSlider("farbschema")
-    .setPosition(800, 390)
+    .setPosition(100, 390)
     .setSize(200, 25)
     .setRange(1, 255)
     .setValue(127)
     ;
     
   variationSlider = gui.addSlider("farbvariation")
-    .setPosition(800, 430)
+    .setPosition(100, 430)
     .setSize(200, 25)
     .setRange(0, 255)
     .setValue(127)
     ;
     
   pastellYesNo = gui.addToggle("pastell_version")
-    .setPosition(800, 520)
+    .setPosition(100, 520)
     .setState(false)
     ;
     
   pixelSlider = gui.addSlider("pixel")
-    .setPosition(800, 470)
+    .setPosition(100, 470)
     .setSize(200, 25)
     .setRange(1, 7)
     .setValue(5)
@@ -351,6 +350,7 @@ public void Start(int theValue){
   colorMode(HSB, 255);
   disableGUI();
   song.play();
+  songPlaying = true;
 } 
 
 void disableGUI(){
@@ -361,6 +361,7 @@ void disableGUI(){
   startButton.setVisible(false);
   pixelSlider.setVisible(false);
   pastellYesNo.setVisible(false);
+  guiVisible = false;
 }
 
 void enableGUI() {
@@ -371,13 +372,14 @@ void enableGUI() {
   startButton.setVisible(true);
   pixelSlider.setVisible(true);
   pastellYesNo.setVisible(true);
+  guiVisible = true;
 }
 
 
 void keyPressed() {
   
   if (key == CODED) {
-    if (keyCode == UP && timeScale <= 1.040) {
+    if (keyCode == UP && timeScale <= 1.20) {
       timeScale += 0.005;
     }
     if (keyCode == DOWN && timeScale >= 0.5) {
@@ -388,7 +390,7 @@ void keyPressed() {
   if (key == ' ' && songPlaying) {
     song.pause();
     songPlaying = false;
-  } else if (key == ' ' && !songPlaying) {
+  } else if (key == ' ' && !songPlaying && !guiVisible) {
     song.play();
     songPlaying = true;
   }
