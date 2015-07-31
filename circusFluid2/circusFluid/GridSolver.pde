@@ -33,7 +33,7 @@ class GridSolver {
           /* HIER kommt die zeile, in der man mit der farbe rumspielen kann.
            * (ich habs versucht auf rgb zu stellen und dann irgendwie schoen zu kriegen, aber eigentlich koennen wir auch alles in hsb machen)
            */
-          fill(farbschema + farbvariation * sin(density[x][y]*0.0004), 200 + 127 * sin(velocity[x][y]*0.01), 255);
+          fill(farbschema + breite_des_spektrums * sin(density[x][y]*0.0004), 200 + 127 * sin(velocity[x][y]*0.01), 255);
           rect(x*cellSize, y*cellSize, cellSize, cellSize);
         }
       }
@@ -43,7 +43,7 @@ class GridSolver {
           /* HIER kommt die zeile, in der man mit der farbe rumspielen kann.
            * (ich habs versucht auf rgb zu stellen und dann irgendwie schoen zu kriegen, aber eigentlich koennen wir auch alles in hsb machen)
            */
-          fill(farbschema + farbvariation * sin(density[x][y]*0.0004), 255, 220 + 127 * sin(velocity[x][y]*0.01));
+          fill(farbschema + breite_des_spektrums * sin(density[x][y]*0.0004), 255, 220 + 127 * sin(velocity[x][y]*0.01));
           rect(x*cellSize, y*cellSize, cellSize, cellSize);
         }
       }

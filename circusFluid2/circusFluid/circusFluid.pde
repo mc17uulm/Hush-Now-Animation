@@ -38,7 +38,7 @@ Button rottoene;
 Button regenbogen;
 
 int farbschema = 127;
-int farbvariation = 127;
+int breite_des_spektrums = 127;
 boolean pastell_version = false;
 
 /*float flowerNum; 
@@ -321,7 +321,7 @@ void startGUI(){
     .setValue(127)
     ;
     
-  variationSlider = gui.addSlider("breite des spektrums")
+  variationSlider = gui.addSlider("breite_des_spektrums")
     .setPosition(100, 430)
     .setSize(200, 25)
     .setRange(0, 255)
