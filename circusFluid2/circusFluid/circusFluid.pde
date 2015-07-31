@@ -25,15 +25,23 @@ ControlP5 gui;
 Textlabel head;
 Textlabel labelA;
 ColorPicker cp;
-
+/*
 Slider hSlider;
 Slider sSlider;
 Slider bSlider;
+*/
 Slider pixelSlider;
+Slider hueSlider;
+Slider variationSlider;
 
-int h = 0;
-int s = 0;
-int b = 0;
+Toggle pastellYesNo;
+
+Button startButton;
+
+
+int farbschema = 127;
+int farbvariation = 127;
+boolean pastell_version = false;
 
 /*float flowerNum; 
 int flowerBackgroundColor = 0;
@@ -42,6 +50,7 @@ float flowerW = 150;
 float flowerH = 150;*/
 
 PFont hendrix;
+
 // Variables for the timeStep
 float y, x, px, py;
 
@@ -49,7 +58,7 @@ float y, x, px, py;
 float force;
 
 // Groeße der Pixel
-int pixel = 1;
+int pixel = 5;
 
 // Anzahl der Frames zwischen zwei drops
 int beat_drop = 20;
@@ -87,10 +96,11 @@ boolean sketchFullScreen(){
 
 void setup () {
   size(displayWidth, displayHeight, OPENGL);
+  
   if(frame != null){
     frame.setResizable(true);
   }
-  colorMode(RGB, 0, 0, 0);
+  
   noStroke();
   
   gui = new ControlP5(this);
@@ -239,47 +249,12 @@ void guitarDrops() {
   force = abs(400000*song.mix.get(500)) + 10000*song.mix.level();
   if (force > 35000) {
     drop();
-    //evtl. grid.speed mit veraendern, um staerkeren effekt zu bekommen?
   }
 }
 
 
-void keyPressed() {
+void startGUI(){  
   
-  if (key == CODED) {
-    if (keyCode == UP) {
-      timeScale += 0.005;
-    }
-    if (keyCode == DOWN) {
-      timeScale -= 0.005;
-    }
-  }
-  
-  if (key == '3') {
-    grid.speed = 21.25;
-  }
-  if (key == '2') {
-    grid.speed = 20;
-  }
-  if (key == '1') {
-    grid.speed = 19;
-  }
-
-  if (key == ' ' && songPlaying) {
-    song.pause();
-    songPlaying = false;
-  } else if (key == ' ' && !songPlaying) {
-    song.play();
-    songPlaying = true;
-  }
-}
-
-void startGUI(){
-  
-  color hsb;
-  colorMode(HSB, 255);
-  hsb = color(h, s, b);
-    
   /*rect(850, 100, flowerW+1, flowerH+1);
   translate(flowerW/2, flowerH/2);
     for (int i = 0; i < 360; i+=2) {
@@ -304,53 +279,56 @@ void startGUI(){
     .setText("Jimmy Hendrix - Hush Now")
     .setPosition(100,50)
     .setColorValue(0xffffffff)
-    .setFont(hendrix)
+//    .setFont(hendrix)
+    .setFont(createFont("arial", 50));
     ;
     
   labelA = gui.addTextlabel("labelA")
     .setText("Settings: ")
     .setPosition(850, 350)
     .setColorValue(0xffffffff)
-    .setFont(createFont("arial", 20))
+    .setFont(createFont("arial", 30))
    ; 
     
   
-  gui.addButton("Start")
+  startButton = gui.addButton("Start")
     .setValue(0)
-    .setPosition(750, 600)
+    .setPosition(800, 600)
     .setSize(100, 25)
+    .setVisible(true)
     ;
 
-  hSlider = gui.addSlider("h")
+  hueSlider = gui.addSlider("farbschema")
     .setPosition(800, 390)
     .setSize(200, 25)
-    .setRange(1, 359)
-    .setValue(176)
+    .setRange(1, 255)
+    .setValue(127)
     ;
     
-  bSlider = gui.addSlider("b")
-    .setPosition(800, 470)
-    .setSize(200, 25)
-    .setRange(0, 99)
-    .setValue(49)
-    ;
-    
-  sSlider = gui.addSlider("s")
+  variationSlider = gui.addSlider("farbvariation")
     .setPosition(800, 430)
     .setSize(200, 25)
-    .setRange(0, 99)
-    .setValue(48)
+    .setRange(0, 255)
+    .setValue(127)
+    ;
+    
+  pastellYesNo = gui.addToggle("pastell_version")
+    .setPosition(800, 520)
+    .setState(false)
     ;
     
   pixelSlider = gui.addSlider("pixel")
-    .setPosition(800, 510)
+    .setPosition(800, 470)
     .setSize(200, 25)
     .setRange(1, 7)
     .setValue(5)
     .setNumberOfTickMarks(7)
     ;
+    
+    head.setVisible(true);
 } 
 
+/*
 void h(int theColor){
   h = theColor;
 }
@@ -362,6 +340,7 @@ void b(int theColor){
 void s(int theColor){
   s = theColor;
 }
+*/
 
 void pixel(int thePixel){
   pixel = thePixel;
@@ -369,17 +348,55 @@ void pixel(int thePixel){
 }
 
 public void Start(int theValue){
-  song.play();
-  enableGUI();
   colorMode(HSB, 255);
+  disableGUI();
+  song.play();
 } 
 
-void enableGUI(){
-  gui.controller("Start").setVisible(false);
+void disableGUI(){
   head.setVisible(false);
   labelA.setVisible(false);
-  hSlider.setVisible(false);
-  sSlider.setVisible(false);
-  bSlider.setVisible(false);
+  hueSlider.setVisible(false);
+  variationSlider.setVisible(false);
+  startButton.setVisible(false);
   pixelSlider.setVisible(false);
+  pastellYesNo.setVisible(false);
+}
+
+void enableGUI() {
+  head.setVisible(true);
+  labelA.setVisible(true);
+  hueSlider.setVisible(true);
+  variationSlider.setVisible(true);
+  startButton.setVisible(true);
+  pixelSlider.setVisible(true);
+  pastellYesNo.setVisible(true);
+}
+
+
+void keyPressed() {
+  
+  if (key == CODED) {
+    if (keyCode == UP && timeScale <= 1.040) {
+      timeScale += 0.005;
+    }
+    if (keyCode == DOWN && timeScale >= 0.5) {
+      timeScale -= 0.005;
+    }
+  }
+  
+  if (key == ' ' && songPlaying) {
+    song.pause();
+    songPlaying = false;
+  } else if (key == ' ' && !songPlaying) {
+    song.play();
+    songPlaying = true;
+  }
+  
+  if (key == 'x') {
+    song.pause();
+    song.rewind();
+    songPlaying = false;
+    enableGUI();
+  }
 }
