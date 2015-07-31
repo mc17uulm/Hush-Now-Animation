@@ -38,6 +38,7 @@ Slider variationSlider;
 Toggle pastellYesNo;
 Button startButton;
 Button rottoene;
+Button regenbogen;
 
 int farbschema = 127;
 int farbvariation = 127;
@@ -305,9 +306,16 @@ void startGUI(){
     .setVisible(true)
     ;
     
-    rottoene = gui.addButton("rottoene")
+  rottoene = gui.addButton("rottoene")
     .setValue(0)
     .setPosition(600, 450)
+    .setSize(100, 25)
+    .setVisible(true)
+    ;
+    
+  regenbogen = gui.addButton("regenbogen")
+    .setValue(0)
+    .setPosition(600, 400)
     .setSize(100, 25)
     .setVisible(true)
     ;
@@ -342,10 +350,7 @@ void startGUI(){
     
     head.setVisible(true);
     labelA.setVisible(true);
-<<<<<<< HEAD
     presets.setVisible(true);
-=======
->>>>>>> origin/master
 } 
 
 /*
@@ -372,6 +377,11 @@ public void rottoene(){
    variationSlider.setValue(30.00);
 }
 
+public void regenbogen(){
+   hueSlider.setValue(127); 
+   variationSlider.setValue(200);
+}
+
 public void Start(int theValue){
   colorMode(HSB, 255);
   disableGUI();
@@ -387,6 +397,7 @@ void disableGUI(){
   variationSlider.setVisible(false);
   startButton.setVisible(false);
   rottoene.setVisible(false);
+  regenbogen.setVisible(false);
   pixelSlider.setVisible(false);
   pastellYesNo.setVisible(false);
   guiVisible = false;
@@ -400,6 +411,7 @@ void enableGUI() {
   variationSlider.setVisible(true);
   startButton.setVisible(true);
   rottoene.setVisible(true);
+  regenbogen.setVisible(true);
   pixelSlider.setVisible(true);
   pastellYesNo.setVisible(true);
   guiVisible = true;
