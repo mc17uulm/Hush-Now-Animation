@@ -24,6 +24,7 @@ ControlP5 gui;
 
 Textlabel head;
 Textlabel labelA;
+Textlabel presets;
 ColorPicker cp;
 /*
 Slider hSlider;
@@ -36,6 +37,7 @@ Slider variationSlider;
 
 Toggle pastellYesNo;
 Button startButton;
+Button rottoene;
 
 int farbschema = 127;
 int farbvariation = 127;
@@ -279,20 +281,33 @@ void startGUI(){
     .setPosition(100,50)
     .setColorValue(0xffffffff)
 //    .setFont(hendrix)
-    .setFont(createFont("arial", 50));
+    .setFont(createFont("arial", 50))
     ;
     
-  labelA = gui.addTextlabel("labelA")
+  labelA = gui.addTextlabel("settings")
     .setText("Settings: ")
     .setPosition(100, 350)
     .setColorValue(0xffffffff)
     .setFont(createFont("arial", 30))
    ; 
-    
+   
+   presets = gui.addTextlabel("presets")
+    .setText("Einstellungsvorschläge:  ")
+    .setPosition(500, 350)
+    .setColorValue(0xffffffff)
+    .setFont(createFont("arial", 30))
+   ;  
   
   startButton = gui.addButton("Start")
     .setValue(0)
     .setPosition(100, 600)
+    .setSize(100, 25)
+    .setVisible(true)
+    ;
+    
+    rottoene = gui.addButton("rottoene")
+    .setValue(0)
+    .setPosition(600, 450)
     .setSize(100, 25)
     .setVisible(true)
     ;
@@ -304,7 +319,7 @@ void startGUI(){
     .setValue(127)
     ;
     
-  variationSlider = gui.addSlider("farbvariation")
+  variationSlider = gui.addSlider("breite des spektrums")
     .setPosition(100, 430)
     .setSize(200, 25)
     .setRange(0, 255)
@@ -325,6 +340,8 @@ void startGUI(){
     ;
     
     head.setVisible(true);
+    labelA.setVisible(true);
+    presets.setVisible(true);
 } 
 
 /*
@@ -346,6 +363,11 @@ void pixel(int thePixel){
   println(pixel);
 }
 
+public void rottoene(){
+   hueSlider.setValue(255);
+   variationSlider.setValue(30.00);
+}
+
 public void Start(int theValue){
   colorMode(HSB, 255);
   disableGUI();
@@ -356,9 +378,11 @@ public void Start(int theValue){
 void disableGUI(){
   head.setVisible(false);
   labelA.setVisible(false);
+  presets.setVisible(false);
   hueSlider.setVisible(false);
   variationSlider.setVisible(false);
   startButton.setVisible(false);
+  rottoene.setVisible(false);
   pixelSlider.setVisible(false);
   pastellYesNo.setVisible(false);
   guiVisible = false;
@@ -367,9 +391,11 @@ void disableGUI(){
 void enableGUI() {
   head.setVisible(true);
   labelA.setVisible(true);
+  presets.setVisible(true);
   hueSlider.setVisible(true);
   variationSlider.setVisible(true);
   startButton.setVisible(true);
+  rottoene.setVisible(true);
   pixelSlider.setVisible(true);
   pastellYesNo.setVisible(true);
   guiVisible = true;
