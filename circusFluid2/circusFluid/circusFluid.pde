@@ -287,10 +287,10 @@ void startGUI(){
    ; 
    
    presets = gui.addTextlabel("presets")
-    .setText("Einstellungsvorschläge:  ")
-    .setPosition(500, 350)
+    .setText("Presets:  ")
+    .setPosition(600, 350)
     .setColorValue(0xffffffff)
-    .setFont(createFont("arial", 30))
+    .setFont(createFont("arial", 25))
    ;  
   
   startButton = gui.addButton("Start")
@@ -373,7 +373,7 @@ public void rottoene(){
 
 public void regenbogen(){
    hueSlider.setValue(127); 
-   variationSlider.setValue(200);
+   variationSlider.setValue(127);
 }
 
 public void Start(int theValue){
