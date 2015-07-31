@@ -277,7 +277,7 @@ void startGUI(){
     */
   
   head = gui.addTextlabel("headlabel")
-    .setText("Jimmy Hendrix - Hush Now")
+    .setText("Jimi Hendrix - Hush Now")
     .setPosition(100,50)
     .setColorValue(0xffffffff)
 //    .setFont(hendrix)
@@ -288,7 +288,7 @@ void startGUI(){
     .setText("Settings: ")
     .setPosition(100, 350)
     .setColorValue(0xffffffff)
-    .setFont(createFont("arial", 30))
+    .setFont(createFont("arial", 25))
    ; 
    
    presets = gui.addTextlabel("presets")
@@ -329,6 +329,7 @@ void startGUI(){
   pastellYesNo = gui.addToggle("pastell_version")
     .setPosition(100, 520)
     .setState(false)
+    .setSize(20,20)
     ;
     
   pixelSlider = gui.addSlider("pixel")
@@ -341,7 +342,10 @@ void startGUI(){
     
     head.setVisible(true);
     labelA.setVisible(true);
+<<<<<<< HEAD
     presets.setVisible(true);
+=======
+>>>>>>> origin/master
 } 
 
 /*
@@ -356,12 +360,12 @@ void b(int theColor){
 void s(int theColor){
   s = theColor;
 }
-*/
 
 void pixel(int thePixel){
   pixel = thePixel;
   println(pixel);
 }
+*/
 
 public void rottoene(){
    hueSlider.setValue(255);
