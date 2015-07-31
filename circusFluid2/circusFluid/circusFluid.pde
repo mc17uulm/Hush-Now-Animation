@@ -36,6 +36,7 @@ Toggle pastellYesNo;
 Button startButton;
 Button rottoene;
 Button regenbogen;
+Button orangetoene;
 
 int farbschema = 127;
 int breite_des_spektrums = 127;
@@ -313,6 +314,13 @@ void startGUI(){
     .setSize(100, 25)
     .setVisible(true)
     ;
+    
+  orangetoene = gui.addButton("orangetoene")
+    .setValue(0)
+    .setPosition(600, 500)
+    .setSize(100, 25)
+    .setVisible(true)
+    ;
 
   hueSlider = gui.addSlider("farbschema")
     .setPosition(100, 390)
@@ -368,7 +376,12 @@ void pixel(int thePixel){
 
 public void rottoene(){
    hueSlider.setValue(255);
-   variationSlider.setValue(30.00);
+   variationSlider.setValue(30);
+}
+
+public void orangetoene(){
+   hueSlider.setValue(28); 
+   variationSlider.setValue(30);
 }
 
 public void regenbogen(){
@@ -392,6 +405,7 @@ void disableGUI(){
   startButton.setVisible(false);
   rottoene.setVisible(false);
   regenbogen.setVisible(false);
+  orangetoene.setVisible(false);
   pixelSlider.setVisible(false);
   pastellYesNo.setVisible(false);
   guiVisible = false;
@@ -406,6 +420,7 @@ void enableGUI() {
   startButton.setVisible(true);
   rottoene.setVisible(true);
   regenbogen.setVisible(true);
+  orangetoene.setVisible(true);
   pixelSlider.setVisible(true);
   pastellYesNo.setVisible(true);
   guiVisible = true;
