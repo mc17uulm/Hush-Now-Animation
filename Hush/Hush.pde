@@ -14,7 +14,7 @@
 int pixelSize = 5;
 
 // Koordinaten für dropDrums
-float drumX, drumY, drumPX, drumPY;
+float drumX, drumY;
 
 // Gibt Seite des Drops an
 int dropCounter = 0;
@@ -382,9 +382,10 @@ public void regenbogen() {
 }
 
 public void Start(int theValue) {
+  drop = null;
   colorMode(HSB, 255);
   disableGUI();
-  //drop = new Drop(pixelSize);
+  drop = new Drop(pixelSize);
   //startDraw = true;
   // dont play the song if the user chose the lineIn version
   if (line_in_version) {
