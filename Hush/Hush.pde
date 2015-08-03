@@ -1,14 +1,14 @@
 /**
-* Hush Now Animation - Jimmy Hendrix 
-* by Luis Beaucamp, Tim Stenzel and Marco Combosch
-* made 2015
-*
-* Credits:
-*   Wateranimation by:
-*     Jared "BlueThen" C. on June 5th, 2011
-*     Updated June 7th, 2011
-*     Circus Fluid
-*/      
+ * Hush Now Animation - Jimmy Hendrix 
+ * by Luis Beaucamp, Tim Stenzel and Marco Combosch
+ * made 2015
+ *
+ * Credits:
+ *   Wateranimation by:
+ *     Jared "BlueThen" C. on June 5th, 2011
+ *     Updated June 7th, 2011
+ *     Circus Fluid
+ */
 
 // Groeße der Pixel
 int pixelSize = 5;
@@ -36,6 +36,8 @@ Slider hueSlider;
 Slider variationSlider;
 
 Toggle pastellYesNo;
+Toggle lineInYesNo;
+
 Button startButton;
 Button rottoene;
 Button regenbogen;
@@ -43,16 +45,27 @@ Button orangetoene;
 
 int farbschema = 127;
 int breite_des_spektrums = 127;
+
+//pastellversion oder normale version?
 boolean pastell_version = false;
 
+//dieser boolean wird vom toggle geaendert
+boolean line_in_version = false;
+
+//dieser boolean ist intern und wird durch line_in_version bestimmt
+boolean listenLineIn = false;
+
 /*float flowerNum; 
-int flowerBackgroundColor = 0;
-float flowerW = 150;
-float flowerH = 150;*/
+ int flowerBackgroundColor = 0;
+ float flowerW = 150;
+ float flowerH = 150;*/
 
 PFont hendrix;
 
 boolean guiVisible = true;
+
+boolean showStats = false;
+
 
 // Variables for the timeStep
 float y, x, px, py;
@@ -91,54 +104,55 @@ AudioPlayer song;
 AudioInput in;
 BeatDetect beat;
 
-boolean sketchFullScreen(){
+boolean sketchFullScreen() {
   return true;
 }
 
 void setup () {
   size(displayWidth, displayHeight, OPENGL);
-  
-  if(frame != null){
+
+  if (frame != null) {
     frame.setResizable(true);
   }
-  
+
   noStroke();
-  
+
   gui = new ControlP5(this); 
-    
-  
+
+
   Terminal t = new Terminal();
   startGUI();
 
   force = 25000;
-// Updated upstream
+  // Updated upstream
 
   x = width/2;
   y = height/2;
-  
+
   x = width/2;    //fuer mittelpunkt bestimmen
   y = height/2;    // fuer mittelpunkt bestimmen
-// Stashed changes
+  // Stashed changes
   px = width/2;
   py = height/2;
 
   drop = new Drop(pixelSize);
-  
+
   minim = new Minim(this);
- // in = minim.getLineIn();
+  in = minim.getLineIn();
   song = minim.loadFile("hush.mp3", 512);
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
-  
+
   songPlaying = false;
 }
 
-class Terminal{
-  
-  Terminal(){
-     hendrix = loadFont("hendrix.vlw");
+class Terminal {
+
+  Terminal() {
+    hendrix = loadFont("hendrix.vlw");
   }
 }
 
+<<<<<<< HEAD
 void makeDrums(){
   // Wähle einen Wertebereich aus, damit Drum auch erkannt wird
   int pos = beats[beatIndex];
@@ -182,6 +196,36 @@ void makeDrums(int i){
                 drumPY = drumY;
                 break;
     }
+=======
+void makeDrums(int i) {
+  // Entscheidet wo der Drop gemacht wird: 0 = Norden; 1 = Westen; 2 = Osten; 3 = Süden;
+  switch(i) {
+  case 0:   
+    drumX = displayWidth/2;
+    drumY = 0;
+    drumPX = drumX;
+    drumPY = drumY;
+    break;
+  case 1:   
+    drumX = 0;
+    drumY = displayHeight/2;
+    drumPX = drumX;
+    drumPY = drumY;
+    break;
+  case 2:   
+    drumX = displayWidth;
+    drumY = displayHeight/2;
+    drumPX = drumX;
+    drumPY = drumY;
+    break;
+  case 3:   
+    drumX = displayWidth/2;
+    drumY = displayHeight;
+    drumPX = drumX;
+    drumPY = drumY;
+    break;
+  }
+>>>>>>> origin/master
   dropDrums();
 }
 
@@ -207,7 +251,7 @@ void draw () {
   if (timeStepAmt > 15) {
     timeStepAmt = 15; // too much accumulation can freeze the program!
   }
-  
+
 
   // Update physics
   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
@@ -225,17 +269,29 @@ void draw () {
    */
 
   drop.draw();
+<<<<<<< HEAD
   guitarDrops();
   makeDrums();
+=======
+>>>>>>> origin/master
   //println(frameRate);
-  
-  
-  drop.speed = map(song.mix.level(), 0, 1, 19, 29.5); //oder so ähnlich
-  
-  fill(0);
-  /*text(timeScale, 20, 20);
-  text(drop.speed, 20, 40);*/
-  
+
+  // line in oder track?
+  if (listenLineIn) {
+    drop.speed = map(in.mix.level(), 0, 1, 20, 25);
+    lineInDrops();
+  } else {
+    // speed einstellen anhand der lautstärke des tracks
+    drop.speed = map(song.mix.level(), 0, 1, 19, 29);
+    guitarDrops();
+  }
+
+
+  if (showStats) {
+    fill(0);
+    text(timeScale, 20, 20);
+    text(drop.speed, 20, 40);
+  }
 }
 
 //////////////// FUNCTIONS ////////////////
@@ -247,172 +303,190 @@ void drop () {
   }
 }
 
+<<<<<<< HEAD
 void dropDrums(){
   // if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
   //  ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
     drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force/7; // Force wird verringert
  // }
   
+=======
+void dropDrums() {
+  if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
+    ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
+    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force;
+  }
+>>>>>>> origin/master
 }
 
-//drop mit abgegriffenen werten
+//drop mit gitarren Werten
 void guitarDrops() {
   force = abs(400000*song.mix.get(500)) + 10000*song.mix.level();
   if (force > 35000) {
     drop();
   }
 }
+//drop mit lineIn Werten
+void lineInDrops() {
+  force = abs(400000*in.mix.get(500)) + 100000*in.mix.level();
+  if (force > 5000) {
+    drop();
+  }
+}
 
+void startGUI() {  
 
-void startGUI(){  
-  
   /*rect(850, 100, flowerW+1, flowerH+1);
-  translate(flowerW/2, flowerH/2);
-    for (int i = 0; i < 360; i+=2) {
-      
-      float angle = sin(i+flowerNum)*50;
-      
-      float x = sin(radians(i))*(150+angle);
-      float y = cos(radians(i))*(150+angle);
-      float x2 = sin(radians(i))*(100+angle);
-      float y2 = cos(radians(i))*(100+angle);
-      
-      stroke(h, s, b);
-      fill(h, s, b);
-      ellipse(x, y, angle/5, angle/5);
-      ellipse(y2, x2, 5, 5);
-      line(x, y, x2, y2);
-    }
-    flowerNum+=0.01;
-    */
-  
+   translate(flowerW/2, flowerH/2);
+   for (int i = 0; i < 360; i+=2) {
+   
+   float angle = sin(i+flowerNum)*50;
+   
+   float x = sin(radians(i))*(150+angle);
+   float y = cos(radians(i))*(150+angle);
+   float x2 = sin(radians(i))*(100+angle);
+   float y2 = cos(radians(i))*(100+angle);
+   
+   stroke(h, s, b);
+   fill(h, s, b);
+   ellipse(x, y, angle/5, angle/5);
+   ellipse(y2, x2, 5, 5);
+   line(x, y, x2, y2);
+   }
+   flowerNum+=0.01;
+   */
+
   head = gui.addTextlabel("headlabel")
     .setText("Jimi Hendrix - Hush Now")
-    .setPosition(100,50)
-    .setColorValue(0xffffffff)
-//    .setFont(hendrix)
-    .setFont(createFont("arial", 50))
-    ;
-    
-  labelA = gui.addTextlabel("settings")
-    .setText("Settings: ")
-    .setPosition(100, 350)
-    .setColorValue(0xffffffff)
-    .setFont(createFont("arial", 25))
-   ; 
-   
-   presets = gui.addTextlabel("presets")
+      .setPosition(100, 50)
+        .setColorValue(0xffffffff)
+          //    .setFont(hendrix)
+          .setFont(createFont("arial", 50))
+            ;
+
+  presets = gui.addTextlabel("presets")
     .setText("Presets:  ")
-    .setPosition(600, 350)
-    .setColorValue(0xffffffff)
-    .setFont(createFont("arial", 25))
-   ;  
-  
+      .setPosition(600, 350)
+        .setColorValue(0xffffffff)
+          .setFont(createFont("arial", 25))
+            ;  
+
   startButton = gui.addButton("Start")
     .setValue(0)
-    .setPosition(100, 600)
-    .setSize(100, 25)
-    .setVisible(true)
-    ;
-    
+      .setPosition(100, 600)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
   rottoene = gui.addButton("rottoene")
     .setValue(0)
-    .setPosition(600, 450)
-    .setSize(100, 25)
-    .setVisible(true)
-    ;
-    
+      .setPosition(600, 450)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
   regenbogen = gui.addButton("regenbogen")
     .setValue(0)
-    .setPosition(600, 400)
-    .setSize(100, 25)
-    .setVisible(true)
-    ;
-    
+      .setPosition(600, 400)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
   orangetoene = gui.addButton("orangetoene")
     .setValue(0)
-    .setPosition(600, 500)
-    .setSize(100, 25)
-    .setVisible(true)
-    ;
+      .setPosition(600, 500)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
 
   hueSlider = gui.addSlider("farbschema")
     .setPosition(100, 390)
-    .setSize(200, 25)
-    .setRange(1, 255)
-    .setValue(127)
-    ;
-    
+      .setSize(200, 25)
+        .setRange(1, 255)
+          .setValue(127)
+            ;
+
   variationSlider = gui.addSlider("breite_des_spektrums")
     .setPosition(100, 430)
-    .setSize(200, 25)
-    .setRange(0, 255)
-    .setValue(127)
-    ;
-    
+      .setSize(200, 25)
+        .setRange(0, 255)
+          .setValue(127)
+            ;
+
   pastellYesNo = gui.addToggle("pastell_version")
     .setPosition(100, 520)
-    .setState(false)
-    .setSize(20,20)
-    ;
-    
+      .setState(false)
+        .setSize(20, 20)
+          ;
+
+  lineInYesNo = gui.addToggle("line_in_version")
+    .setPosition(200, 520)
+      .setState(false)
+        .setSize(20, 20)
+          ;
+
   pixelSlider = gui.addSlider("pixel")
     .setPosition(100, 470)
-    .setSize(200, 25)
-    .setRange(1, 7)
-    .setValue(5)
-    .setNumberOfTickMarks(7)
-    ;
-    
-    head.setVisible(true);
-    labelA.setVisible(true);
-    presets.setVisible(true);
+      .setSize(200, 25)
+        .setRange(1, 7)
+          .setValue(5)
+            .setNumberOfTickMarks(7)
+              ;
+
+  head.setVisible(true);
+  presets.setVisible(true);
 } 
 
 /*
 void h(int theColor){
-  h = theColor;
+ h = theColor;
+ }
+ 
+ void b(int theColor){
+ b = theColor;
+ }
+ 
+ void s(int theColor){
+ s = theColor;
+ }
+ 
+ void pixel(int thePixel){
+ pixel = thePixel;
+ println(pixel);
+ }
+ */
+
+public void rottoene() {
+  hueSlider.setValue(255);
+  variationSlider.setValue(30);
 }
 
-void b(int theColor){
-  b = theColor;
+public void orangetoene() {
+  hueSlider.setValue(28); 
+  variationSlider.setValue(15);
 }
 
-void s(int theColor){
-  s = theColor;
+public void regenbogen() {
+  hueSlider.setValue(127); 
+  variationSlider.setValue(127);
 }
 
-void pixel(int thePixel){
-  pixel = thePixel;
-  println(pixel);
-}
-*/
-
-public void rottoene(){
-   hueSlider.setValue(255);
-   variationSlider.setValue(30);
-}
-
-public void orangetoene(){
-   hueSlider.setValue(28); 
-   variationSlider.setValue(15);
-}
-
-public void regenbogen(){
-   hueSlider.setValue(127); 
-   variationSlider.setValue(127);
-}
-
-public void Start(int theValue){
+public void Start(int theValue) {
   colorMode(HSB, 255);
   disableGUI();
-  song.play();
-  songPlaying = true;
+  // dont play the song if the user chose the lineIn version
+  if (line_in_version) {
+    timeScale = 1.035;
+    listenLineIn = true;
+  } else {
+    listenLineIn = false;
+    song.play();
+    songPlaying = true;
+  }
 } 
 
-void disableGUI(){
+void disableGUI() {
   head.setVisible(false);
-  labelA.setVisible(false);
   presets.setVisible(false);
   hueSlider.setVisible(false);
   variationSlider.setVisible(false);
@@ -422,12 +496,12 @@ void disableGUI(){
   orangetoene.setVisible(false);
   pixelSlider.setVisible(false);
   pastellYesNo.setVisible(false);
+  lineInYesNo.setVisible(false);
   guiVisible = false;
 }
 
 void enableGUI() {
   head.setVisible(true);
-  labelA.setVisible(true);
   presets.setVisible(true);
   hueSlider.setVisible(true);
   variationSlider.setVisible(true);
@@ -437,21 +511,22 @@ void enableGUI() {
   orangetoene.setVisible(true);
   pixelSlider.setVisible(true);
   pastellYesNo.setVisible(true);
+  lineInYesNo.setVisible(true);
   guiVisible = true;
 }
 
 
 void keyPressed() {
-  
+
   if (key == CODED) {
-    if (keyCode == UP && timeScale <= 1.20) {
+    if (keyCode == UP && timeScale <= 1.035) {
       timeScale += 0.005;
     }
     if (keyCode == DOWN && timeScale >= 0.5) {
       timeScale -= 0.005;
     }
   }
-  
+
   if (key == ' ' && songPlaying) {
     song.pause();
     songPlaying = false;
@@ -459,16 +534,22 @@ void keyPressed() {
     song.play();
     songPlaying = true;
   }
-  
+
   if (key == 'x') {
     song.pause();
     song.rewind();
     songPlaying = false;
+    listenLineIn = false;
     enableGUI();
   }
-  
+
   if (key == 's') {
     saveFrame("hushNow_######.png");
   }
-  
+
+  //um die zahlen oben links mal kurz einzublenden
+  if (key == 'i') {
+    showStats = !showStats;
+  }
 }
+
