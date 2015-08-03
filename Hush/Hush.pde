@@ -152,7 +152,6 @@ class Terminal {
   }
 }
 
-<<<<<<< HEAD
 void makeDrums(){
   // Wähle einen Wertebereich aus, damit Drum auch erkannt wird
   int pos = beats[beatIndex];
@@ -196,37 +195,6 @@ void makeDrums(int i){
                 drumPY = drumY;
                 break;
     }
-=======
-void makeDrums(int i) {
-  // Entscheidet wo der Drop gemacht wird: 0 = Norden; 1 = Westen; 2 = Osten; 3 = Süden;
-  switch(i) {
-  case 0:   
-    drumX = displayWidth/2;
-    drumY = 0;
-    drumPX = drumX;
-    drumPY = drumY;
-    break;
-  case 1:   
-    drumX = 0;
-    drumY = displayHeight/2;
-    drumPX = drumX;
-    drumPY = drumY;
-    break;
-  case 2:   
-    drumX = displayWidth;
-    drumY = displayHeight/2;
-    drumPX = drumX;
-    drumPY = drumY;
-    break;
-  case 3:   
-    drumX = displayWidth/2;
-    drumY = displayHeight;
-    drumPX = drumX;
-    drumPY = drumY;
-    break;
-  }
->>>>>>> origin/master
-  dropDrums();
 }
 
 void draw () {
@@ -269,11 +237,8 @@ void draw () {
    */
 
   drop.draw();
-<<<<<<< HEAD
   guitarDrops();
   makeDrums();
-=======
->>>>>>> origin/master
   //println(frameRate);
 
   // line in oder track?
@@ -303,20 +268,11 @@ void drop () {
   }
 }
 
-<<<<<<< HEAD
 void dropDrums(){
   // if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
   //  ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
     drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force/7; // Force wird verringert
  // }
-  
-=======
-void dropDrums() {
-  if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
-    ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
-    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force;
-  }
->>>>>>> origin/master
 }
 
 //drop mit gitarren Werten
