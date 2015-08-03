@@ -406,4 +406,9 @@ void keyPressed() {
     songPlaying = false;
     enableGUI();
   }
+  
+  if (key == 's') {
+    saveFrame("hushNow_######.png");
+  }
+  
 }
