@@ -242,10 +242,11 @@ void drop () {
 }
 
 void dropDrums(){
-   if (((int)(drumX / drop.cellSize) < drop.density.length) &&((int)(drumY / drop.cellSize) < drop.density[0].length) &&((int)(drumY / drop.cellSize) < drop.density[0].length)){
+  //&&((int)(drumY / drop.cellSize) < drop.density[0].length)
+   if (((int)(drumX / drop.cellSize) < drop.density.length) &&((int)(drumY / drop.cellSize) < drop.density[0].length) ){
     drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force; 
   } else{
-    drop.velocity[(int)(drumX / drop.cellSize) - 1][(int)(drumY / drop.cellSize)] += force;
+    drop.velocity[(int)(drumX / drop.cellSize) - 1][(int)(drumY / drop.cellSize) - 1] += force;
   }
 }
 
