@@ -195,6 +195,7 @@ void makeDrums(int i){
                 drumPY = drumY;
                 break;
     }
+    dropDrums();
 }
 
 void draw () {
@@ -271,7 +272,7 @@ void drop () {
 void dropDrums(){
   // if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
   //  ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
-    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force/7; // Force wird verringert
+    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force/5; // Force wird verringert
  // }
 }
 
