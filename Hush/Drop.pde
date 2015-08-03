@@ -23,6 +23,8 @@ class Drop {
     cellSize = sizeOfCells;
     velocity = new float[int(width/cellSize)][int(height/cellSize)];
     density = new float[int(width/cellSize)][int(height/cellSize)];
+    println("Width: " + width + " Height: " + height); 
+    println("Velocity: " + velocity.length + " " + velocity[0].length +  "\nDensity: " + density.length + " " + density[0].length); 
   }
 
   /* Drawing */

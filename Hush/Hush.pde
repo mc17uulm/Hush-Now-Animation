@@ -16,6 +16,7 @@ int pixelSize = 5;
 // Koordinaten für dropDrums
 float drumX, drumY, drumPX, drumPY;
 
+// Gibt Seite des Drops an
 int dropCounter = 0;
 
 import processing.opengl.*;
@@ -55,11 +56,6 @@ boolean line_in_version = false;
 //dieser boolean ist intern und wird durch line_in_version bestimmt
 boolean listenLineIn = false;
 
-/*float flowerNum; 
- int flowerBackgroundColor = 0;
- float flowerW = 150;
- float flowerH = 150;*/
-
 PFont hendrix;
 
 boolean guiVisible = true;
@@ -67,8 +63,8 @@ boolean guiVisible = true;
 boolean showStats = false;
 
 
-// Variables for the timeStep
-float y, x, px, py;
+// Variablen für den Drop
+float y, x;
 
 // staerke des drops
 float force;
@@ -79,7 +75,8 @@ int counter = 0;
 
 long previousTime;
 long currentTime;
-float timeScale = 1; // Play with this to slow down or speed up the fluid (the higher, the faster)
+float timeScale = 1; // Geschwindigkeit der Flüßigkeit verändern (je Höher, desto schneller)
+
 final int fixedDeltaTime = (int)(10 / timeScale);
 float fixedDeltaTimeSeconds = (float)fixedDeltaTime / 1000;
 float leftOverDeltaTime = 0;
@@ -94,8 +91,6 @@ int[] beats = {
   24524, 24795, 25100
 };
 
-
-// The drop for fluid solving
 Drop drop;
 
 // Audio stuff
@@ -110,33 +105,22 @@ boolean sketchFullScreen() {
 
 void setup () {
   size(displayWidth, displayHeight, OPENGL);
-
   if (frame != null) {
     frame.setResizable(true);
   }
-
   noStroke();
 
   gui = new ControlP5(this); 
-
-
   Terminal t = new Terminal();
   startGUI();
 
   force = 25000;
-  // Updated upstream
-
-  x = width/2;
-  y = height/2;
 
   x = width/2;    //fuer mittelpunkt bestimmen
   y = height/2;    // fuer mittelpunkt bestimmen
-  // Stashed changes
-  px = width/2;
-  py = height/2;
 
   drop = new Drop(pixelSize);
-
+  
   minim = new Minim(this);
   in = minim.getLineIn();
   song = minim.loadFile("hush.mp3", 512);
@@ -157,14 +141,18 @@ void makeDrums(){
   int pos = beats[beatIndex];
   int border1 = pos - 100;
   int border2 = pos + 100;
+  
   if((song.position() >= border1) && (song.position() <= border2)){
-    // Sollte die Richtung nach jedem Drum ändern. Funktioniert leider noch nicht
+    
+    makeDrums(dropCounter);
+    dropCounter++;
+    
+    // Ändert die Ecke des jeweiligen DrumDrops
     if(dropCounter == 4){
       dropCounter = 0;
     }
-    //makeDrums(dropCounter);
-    makeDrums(0);
-    dropCounter++;
+    
+    // Muss an endgültiged DrumArray angepasst werden
     if(beatIndex < 10){
       beatIndex++;
     }
@@ -172,27 +160,23 @@ void makeDrums(){
 }
 
 void makeDrums(int i){
-    // Entscheidet wo der Drop gemacht wird: 0 = Norden; 1 = Westen; 2 = Osten; 3 = Süden;
+    // Entscheidet wo der Drop gemacht wird: 0 = Norden; 1 = Westen; 2 = Süden; 3 = Osten;
     switch(i){
       case 0:   drumX = displayWidth/2;
                 drumY = 0;
-                drumPX = drumX;
-                drumPY = drumY;
+                println("0: DrumX: " + drumX + " DrumY: " + drumY);
                 break;
       case 1:   drumX = 0;
                 drumY = displayHeight/2;
-                drumPX = drumX;
-                drumPY = drumY;
+                println("1: DrumX: " + drumX + " DrumY: " + drumY);
                 break;
-      case 2:   drumX = displayWidth;
-                drumY = displayHeight/2;
-                drumPX = drumX;
-                drumPY = drumY;
-                break;
-      case 3:   drumX = displayWidth/2;
+      case 2:   drumX = (displayWidth/2);
                 drumY = displayHeight;
-                drumPX = drumX;
-                drumPY = drumY;
+                println("3: DrumX: " + drumX + " DrumY: " + drumY);
+                break;
+      case 3:   drumX = displayWidth;
+                drumY = (displayHeight/2);
+                println("2: DrumX: " + drumX + " DrumY: " + drumY);
                 break;
     }
     dropDrums();
@@ -202,8 +186,6 @@ void draw () {
 
   //beat.detect(song.mix);
 
-  /******** Physics ********/
-  // time related stuff
   counter++;
 
   // Calculate amount of time since last frame (Delta means "change in")
@@ -226,16 +208,6 @@ void draw () {
   for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
     drop.solve(fixedDeltaTimeSeconds * timeScale);
   }
-
-
-  /*
-  * drop alle x sekunden
-   
-   if(counter == beat_drop){
-   drop();
-   counter = 0;
-   }
-   */
 
   drop.draw();
   guitarDrops();
@@ -260,20 +232,19 @@ void draw () {
   }
 }
 
-//////////////// FUNCTIONS ////////////////
-
 void drop () {
   if (((int)(x / drop.cellSize) < drop.density.length) && ((int)(y / drop.cellSize) < drop.density[0].length) &&
     ((int)(x / drop.cellSize) > 0) && ((int)(y / drop.cellSize) > 0)) {
-    drop.velocity[(int)(x / drop.cellSize)][(int)(y / drop.cellSize)] += force;
+    drop.velocity[(int)(x / drop.cellSize)][(int)(y / drop.cellSize)] += force * 0.90;
   }
 }
 
 void dropDrums(){
-  // if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
-  //  ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
-    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force/5; // Force wird verringert
- // }
+   if (((int)(drumX / drop.cellSize) < drop.density.length) &&((int)(drumY / drop.cellSize) < drop.density[0].length) &&((int)(drumY / drop.cellSize) < drop.density[0].length)){
+    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force; 
+  } else{
+    drop.velocity[(int)(drumX / drop.cellSize) - 1][(int)(drumY / drop.cellSize)] += force;
+  }
 }
 
 //drop mit gitarren Werten
@@ -291,28 +262,11 @@ void lineInDrops() {
   }
 }
 
+public void controlEvent(ControlEvent theEvent) {
+}
+
 void startGUI() {  
-
-  /*rect(850, 100, flowerW+1, flowerH+1);
-   translate(flowerW/2, flowerH/2);
-   for (int i = 0; i < 360; i+=2) {
-   
-   float angle = sin(i+flowerNum)*50;
-   
-   float x = sin(radians(i))*(150+angle);
-   float y = cos(radians(i))*(150+angle);
-   float x2 = sin(radians(i))*(100+angle);
-   float y2 = cos(radians(i))*(100+angle);
-   
-   stroke(h, s, b);
-   fill(h, s, b);
-   ellipse(x, y, angle/5, angle/5);
-   ellipse(y2, x2, 5, 5);
-   line(x, y, x2, y2);
-   }
-   flowerNum+=0.01;
-   */
-
+  
   head = gui.addTextlabel("headlabel")
     .setText("Jimi Hendrix - Hush Now")
       .setPosition(100, 50)
@@ -431,6 +385,7 @@ public void regenbogen() {
 public void Start(int theValue) {
   colorMode(HSB, 255);
   disableGUI();
+  drop = new Drop(pixelSize);
   // dont play the song if the user chose the lineIn version
   if (line_in_version) {
     timeScale = 1.035;
