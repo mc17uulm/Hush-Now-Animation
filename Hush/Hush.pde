@@ -62,6 +62,8 @@ boolean guiVisible = true;
 
 boolean showStats = false;
 
+// boolean startDraw = false;
+
 
 // Variablen für den Drop
 float y, x;
@@ -185,51 +187,51 @@ void makeDrums(int i){
 void draw () {
 
   //beat.detect(song.mix);
-
-  counter++;
-
-  // Calculate amount of time since last frame (Delta means "change in")
-  currentTime = millis();
-  long deltaTimeMS = (long)((currentTime - previousTime));
-  previousTime = currentTime; // reset previousTime
-
-    // timeStepAmt will be how many of our fixedDeltaTimes we need to make up for the passed time since last frame. 
-  int timeStepAmt = (int)(((float)deltaTimeMS + leftOverDeltaTime) / (float)(fixedDeltaTime));
-
-  // If we have any left over time left, add it to the leftOverDeltaTime.
-  leftOverDeltaTime += deltaTimeMS - (timeStepAmt * (float)fixedDeltaTime); 
-
-  if (timeStepAmt > 15) {
-    timeStepAmt = 15; // too much accumulation can freeze the program!
-  }
-
-
-  // Update physics
-  for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
-    drop.solve(fixedDeltaTimeSeconds * timeScale);
-  }
-
-  drop.draw();
-  guitarDrops();
-  makeDrums();
-  //println(frameRate);
-
-  // line in oder track?
-  if (listenLineIn) {
-    drop.speed = map(in.mix.level(), 0, 1, 20, 25);
-    lineInDrops();
-  } else {
-    // speed einstellen anhand der lautstärke des tracks
-    drop.speed = map(song.mix.level(), 0, 1, 19, 29);
+  //if(startDraw){
+    counter++;
+  
+    // Calculate amount of time since last frame (Delta means "change in")
+    currentTime = millis();
+    long deltaTimeMS = (long)((currentTime - previousTime));
+    previousTime = currentTime; // reset previousTime
+  
+      // timeStepAmt will be how many of our fixedDeltaTimes we need to make up for the passed time since last frame. 
+    int timeStepAmt = (int)(((float)deltaTimeMS + leftOverDeltaTime) / (float)(fixedDeltaTime));
+  
+    // If we have any left over time left, add it to the leftOverDeltaTime.
+    leftOverDeltaTime += deltaTimeMS - (timeStepAmt * (float)fixedDeltaTime); 
+  
+    if (timeStepAmt > 15) {
+      timeStepAmt = 15; // too much accumulation can freeze the program!
+    }
+  
+  
+    // Update physics
+    for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
+      drop.solve(fixedDeltaTimeSeconds * timeScale);
+    }
+  
+    drop.draw();
     guitarDrops();
-  }
-
-
-  if (showStats) {
-    fill(0);
-    text(timeScale, 20, 20);
-    text(drop.speed, 20, 40);
-  }
+    makeDrums();
+    //println(frameRate);
+  
+    // line in oder track?
+    if (listenLineIn) {
+      drop.speed = map(in.mix.level(), 0, 1, 20, 25);
+      lineInDrops();
+    } else {
+      // speed einstellen anhand der lautstärke des tracks
+      drop.speed = map(song.mix.level(), 0, 1, 19, 29);
+      guitarDrops();
+    }
+  //}
+  
+    if (showStats) {
+      fill(0);
+      text(timeScale, 20, 20);
+      text(drop.speed, 20, 40);
+    }
 }
 
 void drop () {
@@ -260,9 +262,6 @@ void lineInDrops() {
   if (force > 5000) {
     drop();
   }
-}
-
-public void controlEvent(ControlEvent theEvent) {
 }
 
 void startGUI() {  
@@ -360,12 +359,11 @@ void h(int theColor){
  void s(int theColor){
  s = theColor;
  }
- 
- void pixel(int thePixel){
- pixel = thePixel;
- println(pixel);
- }
  */
+void pixel(int thePixel){
+ pixelSize = thePixel;
+ println(pixelSize);
+ }
 
 public void rottoene() {
   hueSlider.setValue(255);
@@ -385,7 +383,8 @@ public void regenbogen() {
 public void Start(int theValue) {
   colorMode(HSB, 255);
   disableGUI();
-  drop = new Drop(pixelSize);
+  //drop = new Drop(pixelSize);
+  //startDraw = true;
   // dont play the song if the user chose the lineIn version
   if (line_in_version) {
     timeScale = 1.035;
