@@ -16,6 +16,8 @@ int pixelSize = 5;
 // Koordinaten für dropDrums
 float drumX, drumY, drumPX, drumPY;
 
+int dropCounter = 0;
+
 import processing.opengl.*;
 import javax.media.opengl.*;
 import controlP5.*;
@@ -71,6 +73,7 @@ float leftOverDeltaTime = 0;
 
 boolean songPlaying;
 
+int beatIndex = 0;
 
 int[] beats = {
   10050, 10460, 11040, 11217, 
@@ -133,6 +136,25 @@ class Terminal{
   
   Terminal(){
      hendrix = loadFont("hendrix.vlw");
+  }
+}
+
+void makeDrums(){
+  // Wähle einen Wertebereich aus, damit Drum auch erkannt wird
+  int pos = beats[beatIndex];
+  int border1 = pos - 100;
+  int border2 = pos + 100;
+  if((song.position() >= border1) && (song.position() <= border2)){
+    // Sollte die Richtung nach jedem Drum ändern. Funktioniert leider noch nicht
+    if(dropCounter == 4){
+      dropCounter = 0;
+    }
+    //makeDrums(dropCounter);
+    makeDrums(0);
+    dropCounter++;
+    if(beatIndex < 10){
+      beatIndex++;
+    }
   }
 }
 
@@ -204,6 +226,7 @@ void draw () {
 
   drop.draw();
   guitarDrops();
+  makeDrums();
   //println(frameRate);
   
   
@@ -225,10 +248,11 @@ void drop () {
 }
 
 void dropDrums(){
-   if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
-    ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
-    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force;
-  }
+  // if (((int)(drumX / drop.cellSize) < drop.density.length) && ((int)(drumY / drop.cellSize) < drop.density[0].length) &&
+  //  ((int)(drumX / drop.cellSize) > 0) && ((int)(drumY / drop.cellSize) > 0)) {
+    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force/7; // Force wird verringert
+ // }
+  
 }
 
 //drop mit abgegriffenen werten
