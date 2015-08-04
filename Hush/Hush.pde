@@ -471,6 +471,10 @@ void disableGUI() {
   guiVisible = false;
 }
 
+void resetParameter(){
+  beatIndex = 0;
+}
+
 void enableGUI() {
   head.setVisible(true);
   //  presets.setVisible(true);
@@ -515,6 +519,7 @@ void keyPressed() {
     song.rewind();
     songPlaying = false;
     listenLineIn = false;
+    resetParameter();
     enableGUI();
   }
 
