@@ -91,7 +91,7 @@ int beatIndex = 0;
 int[] beats = {
   10050, 10460, 11040, 11217, 
   11539, 11770, 12116, 12566, 12638, 
-  24524, 24795, 25100
+  24524, 24795, 25100, 27210, 27478
 };
 
 Drop drop;
@@ -123,7 +123,7 @@ void setup () {
   y = height/2;    // fuer mittelpunkt bestimmen
 
   drop = new Drop(pixelSize);
-  
+
   minim = new Minim(this);
   in = minim.getLineIn();
   song = minim.loadFile("hush.mp3", 512);
@@ -139,100 +139,103 @@ class Terminal {
   }
 }
 
-void makeDrums(){
+void makeDrums() {
   // Wähle einen Wertebereich aus, damit Drum auch erkannt wird
   int pos = beats[beatIndex];
   int border1 = pos - 100;
   int border2 = pos + 100;
-  
-  if((song.position() >= border1) && (song.position() <= border2)){
-    
+
+  if ((song.position() >= border1) && (song.position() <= border2)) {
+
     makeDrums(dropCounter);
     dropCounter++;
-    
+
     // Ändert die Ecke des jeweiligen DrumDrops
-    if(dropCounter == 4){
+    if (dropCounter == 4) {
       dropCounter = 0;
     }
-    
+
     // Muss an endgültiged DrumArray angepasst werden
-    if(beatIndex < 10){
+    if (beatIndex < 10) {
       beatIndex++;
     }
   }
 }
 
-void makeDrums(int i){
-    // Entscheidet wo der Drop gemacht wird: 0 = Norden; 1 = Westen; 2 = Süden; 3 = Osten;
-    switch(i){
-      case 0:   drumX = displayWidth/2;
-                drumY = 0;
-                println("0: DrumX: " + drumX + " DrumY: " + drumY);
-                break;
-      case 1:   drumX = 0;
-                drumY = displayHeight/2;
-                println("1: DrumX: " + drumX + " DrumY: " + drumY);
-                break;
-      case 2:   drumX = (displayWidth/2);
-                drumY = displayHeight;
-                println("3: DrumX: " + drumX + " DrumY: " + drumY);
-                break;
-      case 3:   drumX = displayWidth;
-                drumY = (displayHeight/2);
-                println("2: DrumX: " + drumX + " DrumY: " + drumY);
-                break;
-    }
-    dropDrums();
+void makeDrums(int i) {
+  // Entscheidet wo der Drop gemacht wird: 0 = Norden; 1 = Westen; 2 = Süden; 3 = Osten;
+  switch(i) {
+  case 0:   
+    drumX = displayWidth/2;
+    drumY = 0;
+    println("0: DrumX: " + drumX + " DrumY: " + drumY);
+    break;
+  case 1:   
+    drumX = 0;
+    drumY = displayHeight/2;
+    println("1: DrumX: " + drumX + " DrumY: " + drumY);
+    break;
+  case 2:   
+    drumX = (displayWidth/2);
+    drumY = displayHeight;
+    println("3: DrumX: " + drumX + " DrumY: " + drumY);
+    break;
+  case 3:   
+    drumX = displayWidth;
+    drumY = (displayHeight/2);
+    println("2: DrumX: " + drumX + " DrumY: " + drumY);
+    break;
+  }
+  dropDrums();
 }
 
 void draw () {
 
   //beat.detect(song.mix);
   //if(startDraw){
-    counter++;
-  
-    // Calculate amount of time since last frame (Delta means "change in")
-    currentTime = millis();
-    long deltaTimeMS = (long)((currentTime - previousTime));
-    previousTime = currentTime; // reset previousTime
-  
-      // timeStepAmt will be how many of our fixedDeltaTimes we need to make up for the passed time since last frame. 
-    int timeStepAmt = (int)(((float)deltaTimeMS + leftOverDeltaTime) / (float)(fixedDeltaTime));
-  
-    // If we have any left over time left, add it to the leftOverDeltaTime.
-    leftOverDeltaTime += deltaTimeMS - (timeStepAmt * (float)fixedDeltaTime); 
-  
-    if (timeStepAmt > 15) {
-      timeStepAmt = 15; // too much accumulation can freeze the program!
-    }
-  
-  
-    // Update physics
-    for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
-      drop.solve(fixedDeltaTimeSeconds * timeScale);
-    }
-  
-    drop.draw();
+  counter++;
+
+  // Calculate amount of time since last frame (Delta means "change in")
+  currentTime = millis();
+  long deltaTimeMS = (long)((currentTime - previousTime));
+  previousTime = currentTime; // reset previousTime
+
+    // timeStepAmt will be how many of our fixedDeltaTimes we need to make up for the passed time since last frame. 
+  int timeStepAmt = (int)(((float)deltaTimeMS + leftOverDeltaTime) / (float)(fixedDeltaTime));
+
+  // If we have any left over time left, add it to the leftOverDeltaTime.
+  leftOverDeltaTime += deltaTimeMS - (timeStepAmt * (float)fixedDeltaTime); 
+
+  if (timeStepAmt > 15) {
+    timeStepAmt = 15; // too much accumulation can freeze the program!
+  }
+
+
+  // Update physics
+  for (int iteration = 1; iteration <= timeStepAmt; iteration++) {
+    drop.solve(fixedDeltaTimeSeconds * timeScale);
+  }
+
+  drop.draw();
+  makeDrums();
+  //println(frameRate);
+
+  // line in oder track?
+  if (listenLineIn) {
+    drop.speed = map(in.mix.level(), 0, 1, 20, 25);
+    lineInDrops();
+  } else {
+    // speed einstellen anhand der lautstärke des tracks
+    drop.speed = map(song.mix.level(), 0, 1, 19, 29);
     guitarDrops();
-    makeDrums();
-    //println(frameRate);
-  
-    // line in oder track?
-    if (listenLineIn) {
-      drop.speed = map(in.mix.level(), 0, 1, 20, 25);
-      lineInDrops();
-    } else {
-      // speed einstellen anhand der lautstärke des tracks
-      drop.speed = map(song.mix.level(), 0, 1, 19, 29);
-      guitarDrops();
-    }
+  }
   //}
-  
-    if (showStats) {
-      fill(0);
-      text(timeScale, 20, 20);
-      text(drop.speed, 20, 40);
-    }
+
+  if (showStats) {
+    fill(0);
+    text(timeScale, 20, 20);
+    text(drop.speed, 20, 40);
+  }
 }
 
 void drop () {
@@ -242,11 +245,12 @@ void drop () {
   }
 }
 
-void dropDrums(){
+void dropDrums() {
+  force = 100000;
   //&&((int)(drumY / drop.cellSize) < drop.density[0].length)
-   if (((int)(drumX / drop.cellSize) < drop.density.length) &&((int)(drumY / drop.cellSize) < drop.density[0].length) ){
-    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force; 
-  } else{
+  if (((int)(drumX / drop.cellSize) < drop.density.length) &&((int)(drumY / drop.cellSize) < drop.density[0].length) ) {
+    drop.velocity[(int)(drumX / drop.cellSize)][(int)(drumY / drop.cellSize)] += force;
+  } else {
     drop.velocity[(int)(drumX / drop.cellSize) - 1][(int)(drumY / drop.cellSize) - 1] += force;
   }
 }
@@ -267,7 +271,7 @@ void lineInDrops() {
 }
 
 void startGUI() {  
-  
+
   head = gui.addTextlabel("headlabel")
     .setText("Jimi Hendrix - Hush Now")
       .setPosition(100, 50)
@@ -362,10 +366,10 @@ void h(int theColor){
  s = theColor;
  }
  */
-void pixel(int thePixel){
- pixelSize = thePixel;
- println(pixelSize);
- }
+void pixel(int thePixel) {
+  pixelSize = thePixel;
+  println(pixelSize);
+}
 
 public void rottoene() {
   hueSlider.setValue(255);
@@ -385,7 +389,7 @@ public void regenbogen() {
 public void Start(int theValue) {
   colorMode(HSB, 255);
   disableGUI();
-  
+
   // if the user changes the pixelSize
   if (pixelSize != oldPixelSize) {
     drop = new Drop(pixelSize);
@@ -397,6 +401,7 @@ public void Start(int theValue) {
     timeScale = 1.035;
     listenLineIn = true;
   } else {
+    timeScale = 1;
     listenLineIn = false;
     song.play();
     songPlaying = true;
