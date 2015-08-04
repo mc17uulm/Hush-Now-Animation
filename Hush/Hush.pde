@@ -398,7 +398,7 @@ public void Start(int theValue) {
   //startDraw = true;
   // dont play the song if the user chose the lineIn version
   if (line_in_version) {
-    timeScale = 1.035;
+    timeScale = 1.005;
     listenLineIn = true;
   } else {
     timeScale = 1;
