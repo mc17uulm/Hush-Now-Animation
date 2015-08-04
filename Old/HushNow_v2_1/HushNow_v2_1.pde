@@ -123,5 +123,8 @@ void keyPressed() {
   if (key == 'i') {
     showInfo = !showInfo;
   }
+  if (key == 's'){
+    saveFrame("Hush_Now_######.png");
+  }
 }
 
