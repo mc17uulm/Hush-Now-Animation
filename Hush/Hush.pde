@@ -44,6 +44,10 @@ Button startButton;
 Button rottoene;
 Button regenbogen;
 Button orangetoene;
+Button randomColors;
+Button blautoene;
+Button gelb_gruen;
+Button no_red;
 
 int farbschema = 127;
 int breite_des_spektrums = 127;
@@ -274,98 +278,117 @@ void startGUI() {
 
   head = gui.addTextlabel("headlabel")
     .setText("Jimi Hendrix - Hush Now")
-      .setPosition(100, 50)
+      .setPosition(width/14, height/16)
         .setColorValue(0xffffffff)
           //    .setFont(hendrix)
           .setFont(createFont("arial", 50))
             ;
-
+  /*
   presets = gui.addTextlabel("presets")
-    .setText("Presets:  ")
-      .setPosition(600, 350)
-        .setColorValue(0xffffffff)
-          .setFont(createFont("arial", 25))
-            ;  
+   .setText("Presets:  ")
+   .setPosition(width*0.4, height*0.4)
+   .setColorValue(0xffffffff)
+   .setFont(createFont("arial", 25))
+   ;  
+   */
 
   startButton = gui.addButton("Start")
     .setValue(0)
-      .setPosition(100, 600)
+      .setPosition((int)(width/14), (int)(height*0.85))
         .setSize(100, 25)
           .setVisible(true)
             ;
-
-  rottoene = gui.addButton("rottoene")
-    .setValue(0)
-      .setPosition(600, 450)
-        .setSize(100, 25)
-          .setVisible(true)
-            ;
-
-  regenbogen = gui.addButton("regenbogen")
-    .setValue(0)
-      .setPosition(600, 400)
-        .setSize(100, 25)
-          .setVisible(true)
-            ;
-
-  orangetoene = gui.addButton("orangetoene")
-    .setValue(0)
-      .setPosition(600, 500)
-        .setSize(100, 25)
-          .setVisible(true)
-            ;
-
   hueSlider = gui.addSlider("farbschema")
-    .setPosition(100, 390)
+    .setPosition((int)(width/14), (int)(height/2.5))
       .setSize(200, 25)
         .setRange(1, 255)
           .setValue(127)
             ;
 
   variationSlider = gui.addSlider("breite_des_spektrums")
-    .setPosition(100, 430)
+    .setPosition((int)(width/14), (int)(height/2.5 + 50))
       .setSize(200, 25)
         .setRange(0, 255)
           .setValue(127)
             ;
 
-  pastellYesNo = gui.addToggle("pastell_version")
-    .setPosition(100, 520)
-      .setState(false)
-        .setSize(20, 20)
-          ;
-
-  lineInYesNo = gui.addToggle("line_in_version")
-    .setPosition(200, 520)
-      .setState(false)
-        .setSize(20, 20)
-          ;
-
   pixelSlider = gui.addSlider("pixel")
-    .setPosition(100, 470)
+    .setPosition((int)(width/14), (int)(height/2.5 + 100))
       .setSize(200, 25)
         .setRange(1, 7)
           .setValue(5)
             .setNumberOfTickMarks(7)
               ;
 
+  pastellYesNo = gui.addToggle("pastell_version")
+    .setPosition((int)(width/14), (int)(height/2.5 + 160))
+      .setState(false)
+        .setSize(20, 20)
+          ;
+
+  lineInYesNo = gui.addToggle("line_in_version")
+    .setPosition((int)(width/7), (int)(height/2.5 + 160))
+      .setState(false)
+        .setSize(20, 20)
+          ;
+
+
+
+  regenbogen = gui.addButton("regenbogen")
+    .setValue(0)
+      .setPosition((int)(width/2.5), (int)(height/2.5))
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
+  rottoene = gui.addButton("rottoene")
+    .setValue(0)
+      .setPosition((int)(width/2.5), (int)(height/2.5)+50)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
+  orangetoene = gui.addButton("orangetoene")
+    .setValue(0)
+      .setPosition((int)(width/2.5), (int)(height/2.5)+100)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
+  randomColors = gui.addButton("random_Colors")
+    .setValue(0)
+      .setPosition((int)(width/2.5)+125, (int)(height/2.5))
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+            
+  blautoene = gui.addButton("blautoene")
+    .setValue(0)
+      .setPosition((int)(width/2.5)+125, (int)(height/2.5)+50)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+            
+  gelb_gruen = gui.addButton("gelb_gruen")
+    .setValue(0)
+      .setPosition((int)(width/2.5)+250, (int)(height/2.5))
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+            
+  no_red = gui.addButton("no_red")
+    .setValue(0)
+      .setPosition((int)(width/2.5)+125, (int)(height/2.5)+100)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
   head.setVisible(true);
-  presets.setVisible(true);
+  
+  //einmal den regenbogenknopf "druecken"
+  regenbogen();
 } 
 
-/*
-void h(int theColor){
- h = theColor;
- }
- 
- void b(int theColor){
- b = theColor;
- }
- 
- void s(int theColor){
- s = theColor;
- }
- */
 void pixel(int thePixel) {
   pixelSize = thePixel;
   println(pixelSize);
@@ -386,6 +409,26 @@ public void regenbogen() {
   variationSlider.setValue(127);
 }
 
+public void random_Colors() {
+  hueSlider.shuffle();
+  variationSlider.shuffle();
+}
+
+public void blautoene() {
+  hueSlider.setValue(145);
+  variationSlider.setValue(20);
+}
+
+public void gelb_gruen() {
+  hueSlider.setValue(47);
+  variationSlider.setValue(17);
+}
+
+public void no_red() {
+  hueSlider.setValue(127);
+  variationSlider.setValue(93);
+}
+
 public void Start(int theValue) {
   colorMode(HSB, 255);
   disableGUI();
@@ -395,7 +438,7 @@ public void Start(int theValue) {
     drop = new Drop(pixelSize);
     oldPixelSize = pixelSize;
   }
-  //startDraw = true;
+  // startDraw = true;
   // dont play the song if the user chose the lineIn version
   if (line_in_version) {
     timeScale = 1.005;
@@ -410,13 +453,17 @@ public void Start(int theValue) {
 
 void disableGUI() {
   head.setVisible(false);
-  presets.setVisible(false);
+  //  presets.setVisible(false);
   hueSlider.setVisible(false);
   variationSlider.setVisible(false);
   startButton.setVisible(false);
   rottoene.setVisible(false);
   regenbogen.setVisible(false);
   orangetoene.setVisible(false);
+  randomColors.setVisible(false);
+  blautoene.setVisible(false);
+  gelb_gruen.setVisible(false);
+  no_red.setVisible(false);
   pixelSlider.setVisible(false);
   pastellYesNo.setVisible(false);
   lineInYesNo.setVisible(false);
@@ -425,13 +472,17 @@ void disableGUI() {
 
 void enableGUI() {
   head.setVisible(true);
-  presets.setVisible(true);
+  //  presets.setVisible(true);
   hueSlider.setVisible(true);
   variationSlider.setVisible(true);
   startButton.setVisible(true);
   rottoene.setVisible(true);
   regenbogen.setVisible(true);
   orangetoene.setVisible(true);
+  randomColors.setVisible(true);
+  blautoene.setVisible(true);
+  gelb_gruen.setVisible(true);
+  no_red.setVisible(true);
   pixelSlider.setVisible(true);
   pastellYesNo.setVisible(true);
   lineInYesNo.setVisible(true);
