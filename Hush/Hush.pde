@@ -161,7 +161,7 @@ void makeDrums() {
     }
 
     // Muss an endgültiged DrumArray angepasst werden
-    if (beatIndex < beats.length) {
+    if (beatIndex < beats.length - 1) {
       beatIndex++;
     }
   }
