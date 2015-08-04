@@ -12,6 +12,7 @@
 
 // Groeße der Pixel
 int pixelSize = 5;
+int oldPixelSize = 5;
 
 // Koordinaten für dropDrums
 float drumX, drumY;
@@ -382,10 +383,14 @@ public void regenbogen() {
 }
 
 public void Start(int theValue) {
-  drop = null;
   colorMode(HSB, 255);
   disableGUI();
-  drop = new Drop(pixelSize);
+  
+  // if the user changes the pixelSize
+  if (pixelSize != oldPixelSize) {
+    drop = new Drop(pixelSize);
+    oldPixelSize = pixelSize;
+  }
   //startDraw = true;
   // dont play the song if the user chose the lineIn version
   if (line_in_version) {
