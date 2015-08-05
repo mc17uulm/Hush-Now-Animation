@@ -143,6 +143,7 @@ void setup () {
   beat = new BeatDetect(song.bufferSize(), song.sampleRate());
 
   songPlaying = false;
+  println("Background Color: " + g.backgroundColor);
 }
 
 class Terminal {
@@ -258,8 +259,8 @@ void draw () {
     text(drop.speed, 20, 40);
   }
   if(start){
-    fill(g.backgroundColor + 10);
-    stroke(g.backgroundColor - 55);
+    fill((int)farbschema + (int)breite_des_spektrums * (int)(sin(drop.density[0][0]*0.0004)), 210 + 117 * (int)(sin(drop.velocity[0][0]*0.01)), 255);
+    stroke(farbschema + breite_des_spektrums * sin(drop.density[0][0]*0.0004) - 20, 190 + 137 * sin(drop.velocity[0][0]*0.01), 235);
     strokeWeight(20);
     hoeheKreis = 200;
     breiteKreis = 200;
