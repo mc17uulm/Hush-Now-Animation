@@ -14,6 +14,10 @@
 int pixelSize = 5;
 int oldPixelSize = 5;
 
+int hoeheKreis, breiteKreis;
+
+boolean start = true;
+
 float sensitivity = 1.0;
 
 // Koordinaten für dropDrums
@@ -96,10 +100,8 @@ int beatIndex = 0;
 
 int[] beats = {
   10050, 10460, 11040, 11217, 11539, 11770, 12116, 12566, 12638, 13073, 
-  /*
   13769, 14536, 15197, 16045, 16660, 17380, 17728, 17984,
    18262, 18971, 19516, 21030, 22372, 23731,
-   */
   24524, 24780, 25100, 27210, 27478, 27806, 29849, 30186, 30523, 32171, 
   32334, 32485, 32659, 32821, 33112, 33460, 33622, 33913, 34087, 34389, 34679, 35039
 };
@@ -123,6 +125,7 @@ void setup () {
   }
   noStroke();
 
+  drop = new Drop(pixelSize);
   gui = new ControlP5(this); 
   Terminal t = new Terminal();
   startGUI();
@@ -132,7 +135,7 @@ void setup () {
   x = width/2;    //fuer mittelpunkt bestimmen
   y = height/2;    // fuer mittelpunkt bestimmen
 
-  drop = new Drop(pixelSize);
+  //drop = new Drop(pixelSize);
 
   minim = new Minim(this);
   in = minim.getLineIn();
@@ -254,6 +257,18 @@ void draw () {
     text(timeScale, 20, 20);
     text(drop.speed, 20, 40);
   }
+  if(start){
+    fill(g.backgroundColor + 10);
+    stroke(g.backgroundColor - 55);
+    strokeWeight(20);
+    hoeheKreis = 200;
+    breiteKreis = 200;
+    ellipse(width*0.8, height*0.2, hoeheKreis, breiteKreis);
+    line(width*0.8, (height*0.2)-(hoeheKreis/2)+10, (width*0.8), (height*0.2) + (hoeheKreis/2) - 10);
+    line(width*0.8, (height*0.2) + 10, (width*0.8) - (breiteKreis/3) ,(height*0.2) + (hoeheKreis/3));
+    line(width*0.8, (height*0.2) + 10, (width*0.8) + (breiteKreis/3), (height*0.2) + (hoeheKreis/3));
+    noStroke();
+  }
 }
 
 void drop () {
@@ -292,6 +307,7 @@ void lineInDrops() {
 ///////////////// GUI ////////////////////
 
 void startGUI() {  
+  
 
   head = gui.addTextlabel("headlabel")
     .setText("Jimi Hendrix - Hush Now")
@@ -449,6 +465,7 @@ public void no_red() {
 public void Start(int theValue) {
   colorMode(HSB, 255);
   disableGUI();
+  start = false;
 
   // if the user changes the pixelSize
   if (pixelSize != oldPixelSize) {
@@ -489,6 +506,7 @@ void disableGUI() {
 
 void resetParameter() {
   beatIndex = 0;
+  start = true;
 }
 
 void enableGUI() {
