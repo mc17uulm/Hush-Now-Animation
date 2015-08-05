@@ -14,6 +14,8 @@
 int pixelSize = 5;
 int oldPixelSize = 5;
 
+float sensitivity = 1.0;
+
 // Koordinaten für dropDrums
 float drumX, drumY;
 
@@ -93,11 +95,13 @@ boolean songPlaying;
 int beatIndex = 0;
 
 int[] beats = {
-  10050, 10460, 11040, 11217, 11539, 11770, 12116, 12566, 12638, 
-  13073, 13769, 14536, 15197, 16045, 16660, 17380, 17728, 17984,
-  18262, 18971, 19516, 21030, 22372, 23731, 25100, 27210, 27478, 
-  27806, 29849, 30186, 30523, 32171, 32334, 32485, 32659, 32821, 
-  33112, 33460, 33622, 33913, 34087, 34389, 34679, 35039
+  10050, 10460, 11040, 11217, 11539, 11770, 12116, 12566, 12638, 13073, 
+  /*
+  13769, 14536, 15197, 16045, 16660, 17380, 17728, 17984,
+   18262, 18971, 19516, 21030, 22372, 23731,
+   */
+  24524, 24780, 25100, 27210, 27478, 27806, 29849, 30186, 30523, 32171, 
+  32334, 32485, 32659, 32821, 33112, 33460, 33622, 33913, 34087, 34389, 34679, 35039
 };
 
 Drop drop;
@@ -229,9 +233,17 @@ void draw () {
   // line in oder track?
   if (listenLineIn) {
     drop.speed = map(in.mix.level(), 0, 1, 20, 25);
+    //adjust volume sensitivity
+    sensitivity = 1;
     lineInDrops();
   } else {
     // speed einstellen anhand der lautstärke des tracks
+    //adjust volume sensitivity
+    if (song.position() <= 13063) {
+      sensitivity = map(song.position(), 0, 13063, 0.1, 1);
+    } else if (song.position() >= 50000) {
+      sensitivity = map(song.position(), 50000, song.length(), 1, 1000);
+    }
     drop.speed = map(song.mix.level(), 0, 1, 19, 29);
     guitarDrops();
   }
@@ -263,18 +275,21 @@ void dropDrums() {
 
 //drop mit gitarren Werten
 void guitarDrops() {
-  force = abs(400000*song.mix.get(500)) + 10000*song.mix.level();
+  force = abs(400000*song.mix.get(500)) + sensitivity*10000*song.mix.level();
   if (force > 35000) {
     drop();
   }
 }
 //drop mit lineIn Werten
 void lineInDrops() {
-  force = abs(400000*in.mix.get(500)) + 100000*in.mix.level();
+  force = abs(400000*in.mix.get(500)) + sensitivity*100000*in.mix.level();
   if (force > 5000) {
     drop();
   }
 }
+
+
+///////////////// GUI ////////////////////
 
 void startGUI() {  
 
@@ -363,21 +378,21 @@ void startGUI() {
         .setSize(100, 25)
           .setVisible(true)
             ;
-            
+
   blautoene = gui.addButton("blautoene")
     .setValue(0)
       .setPosition((int)(width/2.5)+125, (int)(height/2.5)+50)
         .setSize(100, 25)
           .setVisible(true)
             ;
-            
+
   gelb_gruen = gui.addButton("gelb_gruen")
     .setValue(0)
       .setPosition((int)(width/2.5)+250, (int)(height/2.5))
         .setSize(100, 25)
           .setVisible(true)
             ;
-            
+
   no_red = gui.addButton("no_red")
     .setValue(0)
       .setPosition((int)(width/2.5)+125, (int)(height/2.5)+100)
@@ -386,7 +401,7 @@ void startGUI() {
             ;
 
   head.setVisible(true);
-  
+
   //einmal den regenbogenknopf "druecken"
   regenbogen();
 } 
@@ -472,7 +487,7 @@ void disableGUI() {
   guiVisible = false;
 }
 
-void resetParameter(){
+void resetParameter() {
   beatIndex = 0;
 }
 
