@@ -20,6 +20,7 @@ boolean start = true;
 
 float sensitivity = 1.0;
 int saturation = 255;
+int brightness = 260;
 
 // Koordinaten für dropDrums
 float drumX, drumY;
@@ -461,28 +462,33 @@ public void rottoene() {
   hueSlider.setValue(255);
   variationSlider.setValue(30);
   saturationSlider.setValue(255);
+  brightness = 260;
 }
 
 public void orangetoene() {
   hueSlider.setValue(28); 
   variationSlider.setValue(15);
   saturationSlider.setValue(255);
+  brightness = 260;
 }
 
 public void regenbogen() {
   hueSlider.setValue(127); 
   variationSlider.setValue(127);
   saturationSlider.setValue(255);
+  brightness = 260;
 }
 
 public void pastell() {
   saturationSlider.setValue(80);
+  brightness = 260;
 }
 
 public void schwarz_weiss() {
   hueSlider.setValue(127); 
   variationSlider.setValue(127);
   saturationSlider.setValue(0);
+  brightness = 200;
 }
 
 
@@ -490,24 +496,28 @@ public void random_Colors() {
   hueSlider.shuffle();
   variationSlider.shuffle();
   saturationSlider.shuffle();
+  brightness = 260;
 }
 
 public void blautoene() {
   hueSlider.setValue(145);
   variationSlider.setValue(20);
   saturationSlider.setValue(255);
+  brightness = 260;
 }
 
 public void gelb_gruen() {
   hueSlider.setValue(47);
   variationSlider.setValue(17);
   saturationSlider.setValue(255);
+  brightness = 260;
 }
 
 public void no_red() {
   hueSlider.setValue(127);
   variationSlider.setValue(93);
   saturationSlider.setValue(255);
+  brightness = 260;
 }
 
 public void Start(int theValue) {
