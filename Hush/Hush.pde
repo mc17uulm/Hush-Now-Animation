@@ -19,6 +19,7 @@ int hoeheKreis, breiteKreis;
 boolean start = true;
 
 float sensitivity = 1.0;
+int saturation = 255;
 
 // Koordinaten für dropDrums
 float drumX, drumY;
@@ -41,9 +42,10 @@ ColorPicker cp;
 
 Slider pixelSlider;
 Slider hueSlider;
+Slider saturationSlider;
 Slider variationSlider;
 
-Toggle pastellYesNo;
+Toggle lightYesNo;
 Toggle lineInYesNo;
 
 Button startButton;
@@ -54,12 +56,14 @@ Button randomColors;
 Button blautoene;
 Button gelb_gruen;
 Button no_red;
+Button pastell;
+Button blackWhite;
 
 int farbschema = 127;
 int breite_des_spektrums = 127;
 
 //pastellversion oder normale version?
-boolean pastell_version = false;
+boolean light_version = false;
 
 //dieser boolean wird vom toggle geaendert
 boolean line_in_version = false;
@@ -263,8 +267,8 @@ void draw () {
     text(drop.speed, 20, 40);
   }
   if(start){
-    fill((int)farbschema + (int)breite_des_spektrums * (int)(sin(drop.density[0][0]*0.0004)) + 20, 220 + 137 * (int)(sin(drop.velocity[0][0]*0.01)), 255);
-    stroke(farbschema + breite_des_spektrums * sin(drop.density[0][0]*0.0004) - 70, 190 + 137 * sin(drop.velocity[0][0]*0.01), 205);
+    fill((int)farbschema + (int)breite_des_spektrums * (int)(sin(drop.density[0][0]*0.0004)) + 20, saturation, 220 + 137 * (int)(sin(drop.velocity[0][0]*0.01)));
+    stroke(farbschema + breite_des_spektrums * sin(drop.density[0][0]*0.0004) - 70, saturation, 190 + 137 * sin(drop.velocity[0][0]*0.01));
     strokeWeight(20);
     hoeheKreis = 200;
     breiteKreis = 200;
@@ -337,12 +341,19 @@ void startGUI() {
           .setVisible(true)
             ;
   hueSlider = gui.addSlider("farbschema")
-    .setPosition((int)(width/14), (int)(height/2.5))
+    .setPosition((int)(width/14), (int)(height/2.5-50))
       .setSize(200, 25)
         .setRange(1, 255)
           .setValue(127)
             ;
 
+  saturationSlider = gui.addSlider("saturation")
+    .setPosition((int)(width/14), (int)(height/2.5))
+      .setSize(200, 25)
+        .setRange(1, 255)
+          .setValue(255)
+            ;
+  
   variationSlider = gui.addSlider("breite_des_spektrums")
     .setPosition((int)(width/14), (int)(height/2.5 + 50))
       .setSize(200, 25)
@@ -358,7 +369,7 @@ void startGUI() {
             .setNumberOfTickMarks(7)
               ;
 
-  pastellYesNo = gui.addToggle("pastell_version")
+  lightYesNo = gui.addToggle("light_version")
     .setPosition((int)(width/14), (int)(height/2.5 + 160))
       .setState(false)
         .setSize(20, 20)
@@ -379,16 +390,30 @@ void startGUI() {
           .setVisible(true)
             ;
 
-  rottoene = gui.addButton("rottoene")
+  pastell = gui.addButton("pastell")
     .setValue(0)
       .setPosition((int)(width/2.5), (int)(height/2.5)+50)
         .setSize(100, 25)
           .setVisible(true)
             ;
 
-  orangetoene = gui.addButton("orangetoene")
+  blackWhite = gui.addButton("schwarz_weiss")
     .setValue(0)
       .setPosition((int)(width/2.5), (int)(height/2.5)+100)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
+  rottoene = gui.addButton("rottoene")
+    .setValue(0)
+      .setPosition((int)(width/2.5)+250, (int)(height/2.5)+50)
+        .setSize(100, 25)
+          .setVisible(true)
+            ;
+
+  orangetoene = gui.addButton("orangetoene")
+    .setValue(0)
+      .setPosition((int)(width/2.5)+250, (int)(height/2.5)+100)
         .setSize(100, 25)
           .setVisible(true)
             ;
@@ -435,36 +460,54 @@ void pixel(int thePixel) {
 public void rottoene() {
   hueSlider.setValue(255);
   variationSlider.setValue(30);
+  saturationSlider.setValue(255);
 }
 
 public void orangetoene() {
   hueSlider.setValue(28); 
   variationSlider.setValue(15);
+  saturationSlider.setValue(255);
 }
 
 public void regenbogen() {
   hueSlider.setValue(127); 
   variationSlider.setValue(127);
+  saturationSlider.setValue(255);
 }
+
+public void pastell() {
+  saturationSlider.setValue(80);
+}
+
+public void schwarz_weiss() {
+  hueSlider.setValue(127); 
+  variationSlider.setValue(127);
+  saturationSlider.setValue(0);
+}
+
 
 public void random_Colors() {
   hueSlider.shuffle();
   variationSlider.shuffle();
+  saturationSlider.shuffle();
 }
 
 public void blautoene() {
   hueSlider.setValue(145);
   variationSlider.setValue(20);
+  saturationSlider.setValue(255);
 }
 
 public void gelb_gruen() {
   hueSlider.setValue(47);
   variationSlider.setValue(17);
+  saturationSlider.setValue(255);
 }
 
 public void no_red() {
   hueSlider.setValue(127);
   variationSlider.setValue(93);
+  saturationSlider.setValue(255);
 }
 
 public void Start(int theValue) {
@@ -494,17 +537,20 @@ void disableGUI() {
   head.setVisible(false);
   //  presets.setVisible(false);
   hueSlider.setVisible(false);
+  saturationSlider.setVisible(false);
   variationSlider.setVisible(false);
   startButton.setVisible(false);
   rottoene.setVisible(false);
   regenbogen.setVisible(false);
+  pastell.setVisible(false);
+  blackWhite.setVisible(false);
   orangetoene.setVisible(false);
   randomColors.setVisible(false);
   blautoene.setVisible(false);
   gelb_gruen.setVisible(false);
   no_red.setVisible(false);
   pixelSlider.setVisible(false);
-  pastellYesNo.setVisible(false);
+  lightYesNo.setVisible(false);
   lineInYesNo.setVisible(false);
   guiVisible = false;
 }
@@ -518,17 +564,20 @@ void enableGUI() {
   head.setVisible(true);
   //  presets.setVisible(true);
   hueSlider.setVisible(true);
+  saturationSlider.setVisible(true);
   variationSlider.setVisible(true);
   startButton.setVisible(true);
   rottoene.setVisible(true);
   regenbogen.setVisible(true);
+  pastell.setVisible(false);
+  blackWhite.setVisible(false);
   orangetoene.setVisible(true);
   randomColors.setVisible(true);
   blautoene.setVisible(true);
   gelb_gruen.setVisible(true);
   no_red.setVisible(true);
   pixelSlider.setVisible(true);
-  pastellYesNo.setVisible(true);
+  lightYesNo.setVisible(true);
   lineInYesNo.setVisible(true);
   guiVisible = true;
 }

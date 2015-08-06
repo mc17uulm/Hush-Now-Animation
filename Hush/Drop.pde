@@ -29,13 +29,14 @@ class Drop {
 
   /* Drawing */
   void draw () {
-    if (pastell_version) {
+    if (light_version) {
+      float sFactor = map(saturation, 0, 255, 0, 1);
       for (int x = 0; x < velocity.length; x++) {
         for (int y = 0; y < velocity[x].length; y++) {
           /* HIER kommt die zeile, in der man mit der farbe rumspielen kann.
            * (ich habs versucht auf rgb zu stellen und dann irgendwie schoen zu kriegen, aber eigentlich koennen wir auch alles in hsb machen)
            */
-          fill(farbschema + breite_des_spektrums * sin(density[x][y]*0.0004), 200 + 127 * sin(velocity[x][y]*0.01), 255);
+          fill(farbschema + breite_des_spektrums * sin(density[x][y]*0.0004), sFactor*(200 + 127 * sin(velocity[x][y]*0.01)), 255);
           rect(x*cellSize, y*cellSize, cellSize, cellSize);
         }
       }
@@ -45,7 +46,7 @@ class Drop {
           /* HIER kommt die zeile, in der man mit der farbe rumspielen kann.
            * (ich habs versucht auf rgb zu stellen und dann irgendwie schoen zu kriegen, aber eigentlich koennen wir auch alles in hsb machen)
            */
-          fill(farbschema + breite_des_spektrums * sin(density[x][y]*0.0004), 255, 220 + 127 * sin(velocity[x][y]*0.01));
+          fill(farbschema + breite_des_spektrums * sin(density[x][y]*0.0004), saturation, 220 + 127 * sin(velocity[x][y]*0.01));
           rect(x*cellSize, y*cellSize, cellSize, cellSize);
         }
       }
