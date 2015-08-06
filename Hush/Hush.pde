@@ -365,7 +365,7 @@ void startGUI() {
           ;
 
   lineInYesNo = gui.addToggle("line_in_version")
-    .setPosition((int)(width/7), (int)(height/2.5 + 160))
+    .setPosition((int)(width/14)+120, (int)(height/2.5 + 160))
       .setState(false)
         .setSize(20, 20)
           ;
