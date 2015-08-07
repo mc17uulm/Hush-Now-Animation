@@ -279,6 +279,16 @@ void draw () {
     line(width*0.8, (height*0.2) + 10, (width*0.8) + (breiteKreis/3), (height*0.2) + (hoeheKreis/3));
     noStroke();
   }
+  
+  //go back to the menu when the song is over
+  if (song.position() > 74000) {
+    song.pause();
+    song.rewind();
+    songPlaying = false;
+    listenLineIn = false;
+    resetParameter();
+    enableGUI();
+  }
 }
 
 void drop () {
@@ -323,9 +333,8 @@ void startGUI() {
     .setText("Jimi Hendrix - Hush Now")
       .setPosition(width/14, height/16)
         .setColorValue(0xffffffff)
-          //    .setFont(hendrix)
-          .setFont(createFont("arial", 50))
-            .setVisible(true)
+          .setFont(hendrix)
+            //.setFont(createFont("arial", 50))
             ;
 
   startButton = gui.addButton("Start")
@@ -439,6 +448,8 @@ void startGUI() {
         .setSize(100, 25)
           .setVisible(true)
             ;
+
+  head.setVisible(true);
 
   //zum schluss einmal den regenbogenknopf "druecken"
   regenbogen();
