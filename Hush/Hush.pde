@@ -325,15 +325,8 @@ void startGUI() {
         .setColorValue(0xffffffff)
           //    .setFont(hendrix)
           .setFont(createFont("arial", 50))
+            .setVisible(true)
             ;
-  /*
-  presets = gui.addTextlabel("presets")
-   .setText("Presets:  ")
-   .setPosition(width*0.4, height*0.4)
-   .setColorValue(0xffffffff)
-   .setFont(createFont("arial", 25))
-   ;  
-   */
 
   startButton = gui.addButton("Start")
     .setValue(0)
@@ -362,12 +355,12 @@ void startGUI() {
           .setValue(127)
             ;
 
-  pixelSlider = gui.addSlider("pixel")
+  pixelSlider = gui.addSlider("pixelSize")
     .setPosition((int)(width/14), (int)(height/2.5 + 100))
       .setSize(200, 25)
-        .setRange(1, 7)
+        .setRange(1, 15)
           .setValue(5)
-            .setNumberOfTickMarks(7)
+            .setNumberOfTickMarks(15)
               ;
 
   lightYesNo = gui.addToggle("light_version")
@@ -447,13 +440,11 @@ void startGUI() {
           .setVisible(true)
             ;
 
-  head.setVisible(true);
-
-  //einmal den regenbogenknopf "druecken"
+  //zum schluss einmal den regenbogenknopf "druecken"
   regenbogen();
 } 
 
-void pixel(int thePixel) {
+void pixelSize(int thePixel) {
   pixelSize = thePixel;
   println(pixelSize);
 }
@@ -485,8 +476,6 @@ public void pastell() {
 }
 
 public void schwarz_weiss() {
-  hueSlider.setValue(127); 
-  variationSlider.setValue(127);
   saturationSlider.setValue(0);
   brightness = 200;
 }
@@ -545,7 +534,6 @@ public void Start(int theValue) {
 
 void disableGUI() {
   head.setVisible(false);
-  //  presets.setVisible(false);
   hueSlider.setVisible(false);
   saturationSlider.setVisible(false);
   variationSlider.setVisible(false);
@@ -572,15 +560,14 @@ void resetParameter() {
 
 void enableGUI() {
   head.setVisible(true);
-  //  presets.setVisible(true);
   hueSlider.setVisible(true);
   saturationSlider.setVisible(true);
   variationSlider.setVisible(true);
   startButton.setVisible(true);
   rottoene.setVisible(true);
   regenbogen.setVisible(true);
-  pastell.setVisible(false);
-  blackWhite.setVisible(false);
+  pastell.setVisible(true);
+  blackWhite.setVisible(true);
   orangetoene.setVisible(true);
   randomColors.setVisible(true);
   blautoene.setVisible(true);
